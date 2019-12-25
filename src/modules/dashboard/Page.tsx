@@ -13,12 +13,10 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
       >
         <DashboardCards>
           <Card
-            title="Matematika"
-            onClick={() => this.props.history.push("/matematika")}
+            title="Fisika"
+            onClick={() => this.props.history.push("/fisika")}
           />
-          <Card title="Fisika" />
           <Card title="Kimia" />
-          <Card title="Biologi" />
         </DashboardCards>
       </Dashboard>
     );
