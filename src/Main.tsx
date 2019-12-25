@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import LoadingCircle from "./components/LoadingCircle";
 
 const Dashboardmain = React.lazy(() => import("./modules/dashboard"));
@@ -12,6 +12,7 @@ class Main extends React.Component {
           <Switch>
             <Route path="/(login|register)" />
             <Route path="/" component={Dashboardmain} />
+            <Route render={() => <Redirect to="/login" />} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

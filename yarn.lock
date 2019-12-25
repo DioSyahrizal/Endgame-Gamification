@@ -1115,6 +1115,14 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@kata-kit/card@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@kata-kit/card/-/card-0.7.2.tgz#80ceae05b4e29e26670f4a04b095b8ab9cab40d0"
+  integrity sha512-gghFbxBkkMF42sYav0WObDMuO10FYbJLUsbO3AgHAcCXUlpGI8dndSXOpsl/F6VS7Xj6vtffe9GCgEfnbhztUQ==
+  dependencies:
+    "@kata-kit/theme" "^0.7.2"
+    classnames "^2.2.6"
+
 "@kata-kit/dashboard@^0.7.5":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@kata-kit/dashboard/-/dashboard-0.7.5.tgz#2ec2d10c7247b929ec2260d003318ba983373bb1"

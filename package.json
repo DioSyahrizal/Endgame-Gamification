@@ -1,8 +1,9 @@
 {
-  "name": "starter-fe",
+  "name": "gamification-fe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@kata-kit/card": "^0.7.2",
     "@kata-kit/dashboard": "^0.7.5",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.11",
