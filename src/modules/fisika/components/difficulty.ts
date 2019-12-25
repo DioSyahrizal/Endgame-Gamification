@@ -1,17 +1,23 @@
+//mock data backend
+
 const difficulty = [
   {
     difficulty: "Easy",
-    // image: require("assets/image/saturn.png"),
-    desc: "Mudah sekalii pelajaran ini"
+    desc: "Mudah sekalii pelajaran ini",
+    image: require("assets/image/saturn.png"),
+    progress: 5
   },
   {
     difficulty: "Medium",
-    // image: require("assets/image/saturn.png"),
-    desc: "Biasa sekalii pelajaran ini"
+    desc: "Biasa sekalii pelajaran ini",
+    image: require("assets/image/saturn.png"),
+    progress: 7
   },
   {
     difficulty: "Hard",
-    desc: "Susah sekalii pelajaran ini"
+    desc: "Susah sekalii pelajaran ini",
+    image: require("assets/image/saturn.png"),
+    progress: 10
   }
 ];
 

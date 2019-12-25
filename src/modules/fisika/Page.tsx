@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Dashboard } from "@kata-kit/dashboard";
-import { Card, Grid } from "semantic-ui-react";
+import { Card, Grid, Image, Progress } from "semantic-ui-react";
 import difficulty from "./components/difficulty";
 // import Logo from "../../assets/image/saturn.png";
 
@@ -21,10 +21,18 @@ export default class Page extends Component {
               {difficulty.map(diff => (
                 <Grid.Column>
                   <Card>
-                    {/* <Image src={Logo} wrapped ui={false} /> */}
+                    <Image src={diff.image} wrapped ui={false} />
                     <Card.Content>
                       <Card.Header>{diff.difficulty}</Card.Header>
                       <Card.Description>{diff.desc}</Card.Description>
+                    </Card.Content>
+                    <Card.Content extra>
+                      <Progress
+                        value={diff.progress}
+                        total={10}
+                        progress="ratio"
+                        success={diff.progress === 10 ? true : false}
+                      />
                     </Card.Content>
                   </Card>
                 </Grid.Column>
