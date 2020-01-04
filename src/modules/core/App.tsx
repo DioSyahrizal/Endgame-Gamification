@@ -4,6 +4,7 @@ import LoadingCircle from "../../components/LoadingCircle";
 
 const Dashboardmain = React.lazy(() => import("../dashboard"));
 const Fisika = React.lazy(() => import("../fisika"));
+const Soal = React.lazy(() => import("../fisika/soal"));
 
 export default class App extends Component {
   render() {
@@ -11,8 +12,9 @@ export default class App extends Component {
       <Fragment>
         <Suspense fallback={<LoadingCircle />}>
           <Switch>
-            <Route path="/dashboard" component={Dashboardmain} />
-            <Route path="/fisika" component={Fisika} />
+            <Route path="/dashboard" exact component={Dashboardmain} />
+            <Route path="/fisika" exact component={Fisika} />
+            <Route path="/fisika/(easy|medium|hard)" component={Soal} />
             <Route render={() => <Redirect to="/dashboard" />} />
           </Switch>
         </Suspense>

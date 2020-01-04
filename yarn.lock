@@ -1115,6 +1115,16 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@kata-kit/button@^0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@kata-kit/button/-/button-0.7.4.tgz#193cd5f0ed9b598f752b6119c2f5fa5490665b49"
+  integrity sha512-bC1n8E8CTHrvM9DPV1NC8D+foxtA0BvZqoDBbGd6HI3TDqtyFKQl2IxMJijNlVpxmgWy9F/Am8/qwjLZU2rhlQ==
+  dependencies:
+    "@kata-kit/loading" "^0.7.2"
+    "@kata-kit/theme" "^0.7.2"
+    classnames "^2.2.6"
+    polished "^2.3.3"
+
 "@kata-kit/card@^0.7.2":
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/@kata-kit/card/-/card-0.7.2.tgz#80ceae05b4e29e26670f4a04b095b8ab9cab40d0"
@@ -1133,6 +1143,16 @@
     "@kata-kit/tooltip" "^0.7.2"
     classnames "^2.2.6"
 
+"@kata-kit/dropdown@^0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@kata-kit/dropdown/-/dropdown-0.7.4.tgz#afa3247d481fc2ee0ba1607f5a2fa97f1f4ce429"
+  integrity sha512-rX5OMHQgACYcb/hEiGr3c3cRk+qeEBVOyy7JYnIquRwE4N+UoPqA7XzGbGiWmt/4cuWfANCJXknBuCoGVq4PLA==
+  dependencies:
+    "@kata-kit/button" "^0.7.4"
+    "@kata-kit/loading" "^0.7.2"
+    "@kata-kit/theme" "^0.7.2"
+    classnames "^2.2.6"
+
 "@kata-kit/layout@^0.7.5":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@kata-kit/layout/-/layout-0.7.5.tgz#2bd4bad669e91be8609bec1f0e29e4b541e2ebf4"
@@ -1142,6 +1162,15 @@
     classnames "^2.2.6"
     polished "^2.3.3"
     react-custom-scrollbars "^4.2.1"
+
+"@kata-kit/loading@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@kata-kit/loading/-/loading-0.7.2.tgz#03ceeffd16b13a8674da00ba003d184a6fb34a89"
+  integrity sha512-GRxzgRsLi6E7e1oZhS0eTsgg7KGm5gdse8vdnury5cJdyCGSLPPL/333tiUkIAjUuFxjJHorzwSoIk4rP9pLWQ==
+  dependencies:
+    "@kata-kit/theme" "^0.7.2"
+    classnames "^2.2.6"
+    shortid "^2.2.14"
 
 "@kata-kit/theme@^0.7.2":
   version "0.7.2"
@@ -2683,6 +2712,11 @@ clone-deep@^4.0.1:
     is-plain-object "^2.0.4"
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
+
+clsx@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.0.4.tgz#0c0171f6d5cb2fe83848463c15fcc26b4df8c2ec"
+  integrity sha512-1mQ557MIZTrL/140j+JVdRM6e31/OA4vTYxXgqIIZlndyfjHpyawKZia1Im05Vp9BWmImkcNrNtFYQMyFcgJDg==
 
 co@^4.6.0:
   version "4.6.0"
@@ -6610,6 +6644,11 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
+nanoid@^2.1.0:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.1.8.tgz#2dbb0224231b246e3b4c819de7bfea6384dabf08"
+  integrity sha512-g1z+n5s26w0TGKh7gjn7HCqurNKMZWzH08elXzh/gM/csQHd/UqDV6uxMghQYg9IvqRPm1QpeMk50YMofHvEjQ==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -9168,6 +9207,13 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
+
+shortid@^2.2.14:
+  version "2.2.15"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.15.tgz#2b902eaa93a69b11120373cd42a1f1fe4437c122"
+  integrity sha512-5EaCy2mx2Jgc/Fdn9uuDuNIIfWBpzY4XIlhoqtXF6qsf+/+SGZ+FxDdX/ZsMZiWupIWNqAEmiNY4RC+LSmCeOw==
+  dependencies:
+    nanoid "^2.1.0"
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"

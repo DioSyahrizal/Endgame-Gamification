@@ -2,16 +2,18 @@ import React, { Component, Fragment } from "react";
 import { Dashboard } from "@kata-kit/dashboard";
 import { Card, Grid, Image, Progress } from "semantic-ui-react";
 import difficulty from "./components/difficulty";
+import { Header } from "modules/core/Header";
+import { RouteComponentProps } from "react-router";
 // import Logo from "../../assets/image/saturn.png";
 
-export default class Page extends Component {
+export default class Page extends Component<RouteComponentProps> {
   render() {
     return (
       <Dashboard
         title="Fisika"
         floatingElements={
           <Fragment>
-            <p>Dropdown</p>
+            <Header color="black" />
           </Fragment>
         }
       >
@@ -20,7 +22,13 @@ export default class Page extends Component {
             <Grid.Row columns={3}>
               {difficulty.map(diff => (
                 <Grid.Column>
-                  <Card>
+                  <Card
+                    onClick={() =>
+                      this.props.history.push(
+                        `/fisika/${diff.difficulty.toLowerCase()}`
+                      )
+                    }
+                  >
                     <Image src={diff.image} wrapped ui={false} />
                     <Card.Content>
                       <Card.Header>{diff.difficulty}</Card.Header>
