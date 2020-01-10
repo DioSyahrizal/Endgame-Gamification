@@ -20,8 +20,8 @@ export default class Page extends Component<RouteComponentProps> {
         <Fragment>
           <Grid>
             <Grid.Row columns={3}>
-              {difficulty.map(diff => (
-                <Grid.Column>
+              {difficulty.map((diff, id) => (
+                <Grid.Column key={id}>
                   <Card
                     onClick={() =>
                       this.props.history.push(
