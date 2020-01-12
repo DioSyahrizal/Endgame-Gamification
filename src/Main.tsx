@@ -1,8 +1,9 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import LoadingCircle from "./components/LoadingCircle";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "store";
+
+import LoadingCircle from "./components/LoadingCircle";
 
 const App = React.lazy(() => import("./modules/core/App"));
 

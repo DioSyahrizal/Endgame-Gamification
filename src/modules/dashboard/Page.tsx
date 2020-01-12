@@ -10,9 +10,9 @@ import {
 } from "@kata-kit/dashboard";
 import { Card } from "@kata-kit/card";
 
-import { Header } from "modules/core/Header";
 import { AccountSelectorWrapper } from "./components";
 import styled from "styled-components";
+import HeaderContainer from "modules/core/profile/Header";
 
 const Dashboard = styled(KataDashboard)`
   img {
@@ -27,7 +27,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
       <Fragment>
         <Container style={{ position: "relative" }}>
           <AccountSelectorWrapper>
-            <Header color="white" />
+            <HeaderContainer />
           </AccountSelectorWrapper>
         </Container>
         <Dashboard

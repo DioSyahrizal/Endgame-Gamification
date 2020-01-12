@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Dashboard } from "@kata-kit/dashboard";
-import { Header } from "modules/core/Header";
 import { Tab, Table, Label } from "semantic-ui-react";
+import HeaderContainer from "modules/core/profile/Header";
 
 const panes = [
   { menuItem: "Fisika", render: () => <Tab panes={fisikaPanes} /> },
@@ -61,7 +61,7 @@ export default class Page extends Component {
           title="Leaderboard"
           floatingElements={
             <Fragment>
-              <Header color="black" />
+              <HeaderContainer />
             </Fragment>
           }
         >

@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Dashboard } from "@kata-kit/dashboard";
 import { Card, Grid, Image, Progress } from "semantic-ui-react";
 import difficulty from "./components/difficulty";
-import { Header } from "modules/core/Header";
 import { RouteComponentProps } from "react-router";
+import HeaderContainer from "modules/core/profile/Header";
 // import Logo from "../../assets/image/saturn.png";
 
 export default class Page extends Component<RouteComponentProps> {
@@ -13,7 +13,7 @@ export default class Page extends Component<RouteComponentProps> {
         title="Fisika"
         floatingElements={
           <Fragment>
-            <Header color="black" />
+            <HeaderContainer />
           </Fragment>
         }
       >
