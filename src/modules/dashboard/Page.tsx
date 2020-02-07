@@ -14,9 +14,12 @@ import HeaderContainer from "modules/core/profile/Header";
 
 import { AccountSelectorWrapper } from "./components";
 
-// import * as env from "utils/env";
+import * as env from "utils/env";
 
-const GAMA_SERVICES = process.env.REACT_APP_RUNTIME_GAMA_SERVICE_URL;
+const GAMA_SERVICES = env.getRuntimeEnv(
+  "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
+  env.defaultEnvs["REACT_APP_RUNTIME_GAMA_SERVICE_URL"]
+);
 
 const Dashboard = styled(KataDashboard)`
   img {

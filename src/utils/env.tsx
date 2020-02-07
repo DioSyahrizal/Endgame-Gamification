@@ -7,11 +7,7 @@ import get from "lodash-es/get";
  * @param defaultValue fallback value
  */
 export function getRuntimeEnv(name: string, defaultValue?: string) {
-  return get(
-    window,
-    ["__GAMA_RUNTIME__", name],
-    defaultValue || defaultEnvs[name] || undefined
-  );
+  return process.env[name] || defaultValue || defaultEnvs[name] || undefined;
 }
 
 /**
