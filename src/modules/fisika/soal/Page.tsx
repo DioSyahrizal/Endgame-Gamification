@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
-import { Header } from "modules/core/Header";
+import HeaderContainer from "modules/core/profile/Header";
 
 const Box = styled("div")`
   background: ${variables.colors.gray10};
@@ -23,7 +23,7 @@ export default class Page extends Component {
       <Dashboard
         floatingElements={
           <Fragment>
-            <Header color="black" />
+            <HeaderContainer />
           </Fragment>
         }
       >

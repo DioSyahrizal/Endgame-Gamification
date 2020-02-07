@@ -1,13 +1,16 @@
 import React, { FC } from "react";
 
 import Grid from "components/Grid";
-import ProfileMenu from "./profile/ProfileMenu";
+import ProfileMenu from "../ProfileMenu";
+import { ScoreProps } from "./Header.Container";
 
-interface HeaderProps {
-  color: string;
-}
+// interface HeaderProps {
+//   color: string;
+// }
 
-export const Header: FC<HeaderProps> = props => {
+// type HeaderPropsColors = HeaderProps & ScoreProps;
+
+export const Header: FC<ScoreProps> = props => {
   return (
     <Grid.Container verticalAlign="middle" space={22}>
       <Grid.Column>
@@ -17,7 +20,7 @@ export const Header: FC<HeaderProps> = props => {
           style={{ width: "30px", height: "30px" }}
         />
       </Grid.Column>
-      <Grid.Column style={{ color: props.color }}>400</Grid.Column>
+      <Grid.Column>{props.data}</Grid.Column>
       <Grid.Column>
         <ProfileMenu />
       </Grid.Column>

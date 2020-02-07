@@ -9,10 +9,17 @@ import {
   DashboardContentHeader
 } from "@kata-kit/dashboard";
 import { Card } from "@kata-kit/card";
-
-import { Header } from "modules/core/Header";
-import { AccountSelectorWrapper } from "./components";
 import styled from "styled-components";
+import HeaderContainer from "modules/core/profile/Header";
+
+import { AccountSelectorWrapper } from "./components";
+
+import * as env from "utils/env";
+
+const GAMA_SERVICES = env.getRuntimeEnv(
+  "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
+  env.defaultEnvs["REACT_APP_RUNTIME_GAMA_SERVICE_URL"]
+);
 
 const Dashboard = styled(KataDashboard)`
   img {
@@ -27,7 +34,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
       <Fragment>
         <Container style={{ position: "relative" }}>
           <AccountSelectorWrapper>
-            <Header color="white" />
+            <HeaderContainer />
           </AccountSelectorWrapper>
         </Container>
         <Dashboard
@@ -36,7 +43,9 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
           image={dashboardLogo}
           headerContent={<p>Learn with Game Mechanic</p>}
         >
-          <DashboardContentHeader>Mata Pelajaran</DashboardContentHeader>
+          <DashboardContentHeader>
+            Mata Pelajaran {GAMA_SERVICES}
+          </DashboardContentHeader>
           <DashboardCards>
             <Card
               title="Fisika"

@@ -1,5 +1,8 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "store";
+
 import LoadingCircle from "./components/LoadingCircle";
 
 const App = React.lazy(() => import("./modules/core/App"));
@@ -7,7 +10,7 @@ const App = React.lazy(() => import("./modules/core/App"));
 class Main extends React.Component {
   render() {
     return (
-      <BrowserRouter>
+      <ConnectedRouter history={history}>
         <React.Suspense fallback={<LoadingCircle />}>
           <Switch>
             <Route path="/(login|register)" />
@@ -15,7 +18,7 @@ class Main extends React.Component {
             <Route render={() => <Redirect to="/login" />} />
           </Switch>
         </React.Suspense>
-      </BrowserRouter>
+      </ConnectedRouter>
     );
   }
 }
