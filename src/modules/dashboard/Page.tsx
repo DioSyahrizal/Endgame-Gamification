@@ -41,11 +41,16 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
           title="Gamification Primagama"
           isStarter
           image={dashboardLogo}
-          headerContent={<p>Learn with Game Mechanic</p>}
+          headerContent={
+            <>
+              <p>Learn with Game Mechanic</p> <br />
+              <p>
+                Build in {process.env.NODE_ENV} and {GAMA_SERVICES}
+              </p>
+            </>
+          }
         >
-          <DashboardContentHeader>
-            Mata Pelajaran {GAMA_SERVICES}
-          </DashboardContentHeader>
+          <DashboardContentHeader>Mata Pelajaran</DashboardContentHeader>
           <DashboardCards>
             <Card
               title="Fisika"
