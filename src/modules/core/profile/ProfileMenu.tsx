@@ -6,6 +6,7 @@ import { ReactComponent as SettingIcon } from "assets/icon/ic_setting.svg";
 import { Menu } from "./components";
 import { DropdownItem } from "@kata-kit/dropdown";
 import { RouteComponentProps, withRouter } from "react-router";
+import LogoutButton from "modules/auth/LogoutButton";
 
 interface ProfileMenuProps extends RouteComponentProps {}
 
@@ -47,7 +48,7 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
 
                 <DropdownItem divider />
                 <Menu.DropdownItem>
-                  <Menu.NavLink to={`/logout`}>Logout</Menu.NavLink>
+                  <LogoutButton />
                 </Menu.DropdownItem>
               </Menu.DropdownMenu>
             </Menu.Dropdown>

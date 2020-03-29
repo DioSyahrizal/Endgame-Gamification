@@ -5,10 +5,9 @@ import dashboardLogo from "assets/image/dashboard.svg";
 
 import {
   Dashboard as KataDashboard,
-  DashboardCards,
   DashboardContentHeader
 } from "@kata-kit/dashboard";
-import { Card } from "@kata-kit/card";
+
 import styled from "styled-components";
 import HeaderContainer from "modules/core/profile/Header";
 
@@ -25,6 +24,9 @@ const Dashboard = styled(KataDashboard)`
   img {
     width: 426px;
     height: 240px;
+  }
+  .cueDVP {
+    background: linear-gradient(to right, blue, grey);
   }
 `;
 
@@ -51,7 +53,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
           }
         >
           <DashboardContentHeader>Mata Pelajaran</DashboardContentHeader>
-          <DashboardCards>
+          {/* <DashboardCards>
             <Card
               title="Fisika"
               onClick={() => this.props.history.push("/fisika")}
@@ -59,7 +61,15 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
               <p>Progress: 25%</p>
             </Card>
             <Card title="Kimia" />
-          </DashboardCards>
+          </DashboardCards> */}
+          <div className="flex flex-row justify-between">
+            <div className="bg-gray-500 m-2 p-4 w-full h-full rounded-md text-center">
+              <h3>Pysich Learn</h3>
+            </div>
+            <div className="bg-gray-500 m-2 w-full h-full rounded-md text-center">
+              Pysich Learn
+            </div>
+          </div>
         </Dashboard>
       </Fragment>
     );

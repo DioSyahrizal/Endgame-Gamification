@@ -24,5 +24,5 @@ export function getReactEnv(name: string, defaultValue?: string) {
  * Fallback environment variable.
  */
 export const defaultEnvs: { [key: string]: string } = {
-  REACT_APP_RUNTIME_GAMA_SERVICE_URL: "https://env-berhasil.com"
+  REACT_APP_RUNTIME_GAMA_SERVICE_URL: "https://be-gamification.herokuapp.com/"
 };
