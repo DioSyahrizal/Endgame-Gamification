@@ -7,32 +7,29 @@ import {
   Button,
   Message
 } from "semantic-ui-react";
+import { Formik } from "formik";
+import * as yup from "yup";
+
 import { LoginContainerProps } from "./Login.Container";
 
 interface Props extends LoginContainerProps {}
 
 interface States {
-  username: string;
+  email: string;
   password: string;
 }
 
-export default class Login extends Component<Props, States> {
-  constructor(props: any) {
-    super(props);
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email("Invalid email")
+    .required("Email is empty!"),
+  password: yup.string().required("Password is empty!")
+});
 
-    this.state = {
-      username: "",
-      password: ""
-    };
-  }
-
-  login = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    this.props.loginAction(data.username, data.password);
+export default class Login extends Component<Props> {
+  login = (values: States) => {
+    this.props.loginAction(values.email, values.password);
   };
 
   inputChange = (name: string) => {
@@ -57,33 +54,54 @@ export default class Login extends Component<Props, States> {
           <Header as="h2" color="teal" textAlign="center">
             {/* <Image src='/logo.png' /> Log-in to your account */}
           </Header>
-          <Form onSubmit={this.login} size="large">
-            <Segment raised>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="username"
-                onChange={this.inputChange("username")}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                type="password"
-                onChange={this.inputChange("password")}
-              />
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={validationSchema}
+            onSubmit={this.login}
+          >
+            {({ handleSubmit, values, errors, handleChange }) => {
+              return (
+                <Form layout="horizontal" onSubmit={handleSubmit}>
+                  <Segment raised>
+                    <Form.Input
+                      name="email"
+                      type="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      error={errors.email ? { content: errors.email } : null}
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="email"
+                    />
 
-              <Button
-                color="green"
-                icon="right arrow"
-                fluid
-                labelPosition="right"
-                content="Login"
-              />
-            </Segment>
-          </Form>
+                    <Form.Input
+                      name="password"
+                      type="password"
+                      onChange={handleChange}
+                      value={values.password}
+                      error={
+                        errors.password ? { content: errors.password } : null
+                      }
+                      fluid
+                      icon="lock"
+                      iconPosition="left"
+                      placeholder="Password"
+                    />
+
+                    <Button
+                      type="submit"
+                      color="green"
+                      icon="right arrow"
+                      fluid
+                      labelPosition="right"
+                      content="Login"
+                    />
+                  </Segment>
+                </Form>
+              );
+            }}
+          </Formik>
           <Message>
             New to us? <a href="/register">Sign Up</a>
           </Message>

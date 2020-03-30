@@ -37,7 +37,7 @@ function* login(email: string, password: string) {
       console.dir(auth);
       setToken(auth, { expires: 2 });
       yield put(fetchLoginSuccess(auth.token));
-      yield put(detailUserSuccess(userDetail));
+      yield put(detailUserSuccess(userDetail.data));
       yield put(push("/dashboard"));
       yield console.dir("Success Login");
     } else {
