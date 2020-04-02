@@ -73,7 +73,6 @@ export function clearToken() {
 export function getFromLocalStorage(itemName: string) {
   try {
     const data = localStorage.getItem(itemName);
-
     return JSON.parse(data!);
   } catch (error) {
     return undefined;

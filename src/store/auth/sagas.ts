@@ -34,17 +34,19 @@ function* login(email: string, password: string) {
         `/user/${detail.id}`
       );
       auth.detail = userDetail.data;
-      console.dir(auth);
       setToken(auth, { expires: 2 });
       yield put(fetchLoginSuccess(auth.token));
       yield put(detailUserSuccess(userDetail.data));
-      yield put(push("/dashboard"));
-      yield console.dir("Success Login");
+      if (detail.role === "user") {
+        put(push("/user"));
+      } else {
+        put(push("/admin"));
+      }
     } else {
       yield put(fetchLoginError("Invalid email or password"));
     }
   } catch (error) {
-    yield put(fetchLoginError(error));
+    yield put(fetchLoginError(error.response.data));
   }
 }
 
@@ -84,7 +86,6 @@ export function* validate() {
 
 function* authFlowSaga(): any {
   const tokens = getToken();
-  console.dir(tokens);
   const hasUser = yield select((state: RootStore) =>
     getIsAuthenticated(state.auth)
   );
@@ -111,6 +112,7 @@ function* createAuthenticateToken(payload: any) {
     if (payload) {
       localStorage.setItem("auth_selected", JSON.stringify(payload));
       yield put(fetchLoginSuccess(payload.token));
+      yield put(detailUserSuccess(payload.detail));
     }
   } catch (error) {
     yield call(logout);

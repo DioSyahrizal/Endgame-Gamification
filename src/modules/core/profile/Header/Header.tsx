@@ -20,7 +20,7 @@ export const Header: FC<ScoreProps> = props => {
           style={{ width: "30px", height: "30px" }}
         />
       </Grid.Column>
-      <Grid.Column>{props.data}</Grid.Column>
+      <Grid.Column style={{ color: "white" }}>{props.data}</Grid.Column>
       <Grid.Column>
         <ProfileMenu />
       </Grid.Column>

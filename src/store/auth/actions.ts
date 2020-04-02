@@ -8,7 +8,7 @@ export const fetchLoginRequest = (email: string, password: string) =>
 export const fetchLoginSuccess = (token: string) =>
   action(AuthActionTypes.FETCH_AUTH_SUCCESS, token);
 
-export const fetchLoginError = (err: string) =>
+export const fetchLoginError = (err: any) =>
   action(AuthActionTypes.FETCH_AUTH_ERROR, err);
 
 export const detailUserSuccess = (payload: any) => {

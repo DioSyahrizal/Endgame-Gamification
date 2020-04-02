@@ -9,7 +9,7 @@ import LoadingCircle from "./components/LoadingCircle";
 import "./styles/output.css";
 import AuthChecker from "modules/auth/AuthChecker";
 
-const App = React.lazy(() => import("./modules/core/App"));
+const App = React.lazy(() => import("./modules/core/App.Container"));
 const Auth = React.lazy(() => import("./modules/auth"));
 
 class Main extends React.Component {

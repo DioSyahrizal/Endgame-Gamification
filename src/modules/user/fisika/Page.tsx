@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Dashboard } from "@kata-kit/dashboard";
-import { Card, Image, Progress } from "semantic-ui-react";
+import { Card, Image, Progress, Container } from "semantic-ui-react";
 import difficulty from "./components/difficulty";
 import { RouteComponentProps } from "react-router";
 import HeaderContainer from "modules/core/profile/Header";
@@ -9,15 +8,15 @@ import HeaderContainer from "modules/core/profile/Header";
 export default class Page extends Component<RouteComponentProps> {
   render() {
     return (
-      <Dashboard
-        title="Fisika"
-        floatingElements={
-          <Fragment>
-            <HeaderContainer />
-          </Fragment>
-        }
-      >
-        <Fragment>
+      <Fragment>
+        <div
+          className="flex flex-row justify-between items-center content-center py-6 px-12"
+          style={{ backgroundColor: "#d64141" }}
+        >
+          <h2 style={{ margin: 0, color: "white" }}>Fisika</h2>
+          <HeaderContainer />
+        </div>
+        <Container style={{ marginTop: 20 }}>
           <div className="flex flex-col justify-around items-center lg:flex-row">
             {difficulty.map((diff, id) => (
               <div key={id}>
@@ -50,8 +49,8 @@ export default class Page extends Component<RouteComponentProps> {
               </div>
             ))}
           </div>
-        </Fragment>
-      </Dashboard>
+        </Container>
+      </Fragment>
     );
   }
 }

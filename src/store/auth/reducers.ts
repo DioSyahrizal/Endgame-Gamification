@@ -15,7 +15,7 @@ const errors: Reducer<AuthState["errors"]> = (
 ) => {
   switch (type) {
     case AuthActionTypes.FETCH_AUTH_ERROR: {
-      return payload.error;
+      return payload.errors;
     }
     default: {
       return state;

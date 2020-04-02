@@ -11,6 +11,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import { LoginContainerProps } from "./Login.Container";
+import { Redirect } from "react-router";
 
 interface Props extends LoginContainerProps {}
 
@@ -44,6 +45,13 @@ export default class Login extends Component<Props> {
   };
 
   render() {
+    const { isLoggedIn, isLoading } = this.props;
+    const from = this.props.location.state || "/";
+
+    if (isLoggedIn) {
+      return <Redirect to={from} />;
+    }
+
     return (
       <Grid
         textAlign="center"
@@ -51,6 +59,11 @@ export default class Login extends Component<Props> {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
+          {this.props.errors && (
+            <Message negative>
+              <Message.Header>{this.props.errors}</Message.Header>
+            </Message>
+          )}
           <Header as="h2" color="teal" textAlign="center">
             {/* <Image src='/logo.png' /> Log-in to your account */}
           </Header>
@@ -94,6 +107,7 @@ export default class Login extends Component<Props> {
                       color="green"
                       icon="right arrow"
                       fluid
+                      loading={isLoading}
                       labelPosition="right"
                       content="Login"
                     />

@@ -6,10 +6,15 @@ import { RouteComponentProps } from "react-router-dom";
 import Login from "./Login";
 import { fetchLoginRequest } from "store/auth/actions";
 import { RootStore } from "interfaces/stores";
-import { getAuthLoading, getAuthError } from "store/auth/selectors";
+import {
+  getAuthLoading,
+  getAuthError,
+  getIsAuthenticated
+} from "store/auth/selectors";
 
 interface PropsFromState {
   isLoading?: boolean;
+  isLoggedIn: boolean;
   errors: string | null;
 }
 
@@ -30,7 +35,8 @@ const LoginContainer = (props: LoginContainerProps) => <Login {...props} />;
 const mapStateToProps = ({ auth }: RootStore): PropsFromState => {
   return {
     isLoading: getAuthLoading(auth),
-    errors: getAuthError(auth)
+    errors: getAuthError(auth),
+    isLoggedIn: getIsAuthenticated(auth)
   };
 };
 
