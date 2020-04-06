@@ -6,6 +6,7 @@ import * as env from "utils/env";
 
 import { getAuthToken } from "store/auth/selectors";
 import { validate } from "store/auth/sagas";
+import { getToken } from "./token";
 
 export const API_URL_ENDPOINT = env.getRuntimeEnv(
   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
@@ -25,10 +26,10 @@ export function callApiSvc(
     url,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    data
-  }).then(resp => resp.data);
+    data,
+  }).then((resp) => resp.data);
 }
 
 export function* callApi(type: Method, url: string, data?: any, base?: string) {
@@ -58,7 +59,21 @@ export function callApiWithoutToken(
     method: type,
     baseURL: base ? base : API_URL_ENDPOINT,
     headers: {
-      "Content-Type": "application/json; charset=utf-8"
-    }
-  }).then(resp => resp.data);
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  }).then((resp) => resp.data);
+}
+
+const token = getToken();
+
+export function privateApi() {
+  const authToken = token && token.token;
+  const instance = axios.create({
+    baseURL: API_URL_ENDPOINT,
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  return instance;
 }

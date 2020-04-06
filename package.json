@@ -3,6 +3,7 @@
   "version": "0.1.3",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.0.5",
     "@kata-kit/card": "^0.7.2",
     "@kata-kit/dashboard": "^0.7.5",
     "@kata-kit/dropdown": "^0.7.4",
@@ -19,6 +20,7 @@
     "@types/react-router-dom": "^5.1.3",
     "@types/styled-components": "^4.4.0",
     "@types/yup": "^0.26.33",
+    "antd": "^4.1.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
     "clsx": "^1.0.4",
@@ -31,6 +33,7 @@
     "postcss-cli": "^7.1.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-mathjax4": "^1.0.2",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
@@ -44,6 +47,7 @@
     "tailwindcss": "^1.2.0",
     "typesafe-actions": "^5.1.0",
     "typescript": "3.7.2",
+    "xlsx": "^0.15.6",
     "yup": "^0.28.3"
   },
   "scripts": {
