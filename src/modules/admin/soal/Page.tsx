@@ -4,9 +4,9 @@ import {
   Button as SemanticButton,
   TextArea,
   Table as Setable,
-  Rating,
 } from "semantic-ui-react";
 import * as yup from "yup";
+import XLSX from "xlsx";
 import MathWrapper from "components/MathWrapper";
 import SideNavContext from "../context/SidenavContext";
 import { useOnMount } from "utils/hooks";
@@ -69,13 +69,8 @@ const Page: FC = () => {
   const getBase64 = (file: any) => {
     return new Promise((resolve) => {
       let fileInfo;
-
-      // Make new FileReader
       let reader = new FileReader();
-
-      // Convert the file to base64 text
       reader.readAsDataURL(file);
-
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object

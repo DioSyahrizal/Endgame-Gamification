@@ -15,7 +15,7 @@ const Soal = React.lazy(() => import("./soal"));
 
 const parentPath = "/admin";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const Page: FC = () => {
   const [breadcrumbs, setBreadcrumbs] = useState([]);

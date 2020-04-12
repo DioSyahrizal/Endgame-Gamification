@@ -20,7 +20,8 @@ const Page: React.FC = () => {
           />
           <Route path={`${parentPath}/fisika`} exact component={Fisika} />
           <Route
-            path={`${parentPath}/fisika/(easy|medium|hard)`}
+            path={`${parentPath}/fisika/:diff/:id`}
+            exact
             component={Soal}
           />
           <Route path={`${parentPath}/leaderboard`} component={Leaderboard} />

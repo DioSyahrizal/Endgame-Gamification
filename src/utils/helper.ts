@@ -10,3 +10,7 @@ export function textFormat(text: string, length: number = 20) {
   text = text.substring(0, last);
   return text + "...";
 }
+
+export function capitalizeFirstLetter(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}

@@ -10,7 +10,7 @@ import { ScoreProps } from "./Header.Container";
 
 // type HeaderPropsColors = HeaderProps & ScoreProps;
 
-export const Header: FC<ScoreProps> = props => {
+export const Header: FC<ScoreProps> = (props) => {
   return (
     <Grid.Container verticalAlign="middle" space={22}>
       <Grid.Column>
@@ -20,7 +20,9 @@ export const Header: FC<ScoreProps> = props => {
           style={{ width: "30px", height: "30px" }}
         />
       </Grid.Column>
-      <Grid.Column style={{ color: "white" }}>{props.data}</Grid.Column>
+      <Grid.Column style={{ color: props.color ? props.color : "white" }}>
+        {props.data}
+      </Grid.Column>
       <Grid.Column>
         <ProfileMenu />
       </Grid.Column>

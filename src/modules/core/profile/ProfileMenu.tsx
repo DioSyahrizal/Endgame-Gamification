@@ -16,12 +16,12 @@ interface ProfileMenuStates {
 
 class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   handleToggle = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
+    this.setState((prevState) => ({
+      isOpen: !prevState.isOpen,
     }));
   };
 
@@ -36,7 +36,7 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
         <Menu.Row>
           <Menu.Info onClick={this.handleToggle}>
             {renderIcon(SettingIcon)}
-            <Menu.Text>Settings</Menu.Text>
+            <Menu.Text>Menu</Menu.Text>
           </Menu.Info>
           <Menu.Item>
             <Menu.Dropdown isOpen={isOpen}>

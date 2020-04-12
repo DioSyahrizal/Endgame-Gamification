@@ -1162,7 +1162,7 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@kata-kit/button@^0.7.4":
+"@kata-kit/button@^0.7.3-canary.0", "@kata-kit/button@^0.7.4":
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/@kata-kit/button/-/button-0.7.4.tgz#193cd5f0ed9b598f752b6119c2f5fa5490665b49"
   integrity sha512-bC1n8E8CTHrvM9DPV1NC8D+foxtA0BvZqoDBbGd6HI3TDqtyFKQl2IxMJijNlVpxmgWy9F/Am8/qwjLZU2rhlQ==
@@ -1179,6 +1179,15 @@
   dependencies:
     "@kata-kit/theme" "^0.7.2"
     classnames "^2.2.6"
+
+"@kata-kit/common@^0.7.1-canary.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@kata-kit/common/-/common-0.7.2.tgz#94e8cc930f0edce5b82a643f95a3d087acdb84c6"
+  integrity sha512-Dj557QBrOyAld+B7e2MsWNLLerJD7lKjWqElIzii30TJ4ZV7gRNwJ/cwaR3262k/ix05rcluCstoJFtxTKJNrw==
+  dependencies:
+    "@kata-kit/theme" "^0.7.2"
+    classnames "^2.2.6"
+    focus-trap "^3.0.0"
 
 "@kata-kit/dashboard@^0.7.5":
   version "0.7.5"
@@ -1219,7 +1228,18 @@
     classnames "^2.2.6"
     shortid "^2.2.14"
 
-"@kata-kit/theme@^0.7.2":
+"@kata-kit/modal@0.7.3-canary.2":
+  version "0.7.3-canary.2"
+  resolved "https://registry.yarnpkg.com/@kata-kit/modal/-/modal-0.7.3-canary.2.tgz#4de0306dcdb0f8c1dff669023705e447624eca46"
+  integrity sha512-NgUV2uADAwdNadzh5go4i2WepIqSOhPiOAC4kL/pZzvOotxF7c+Dr60vxv9kOoehUGJI9ee4TMnhG706doBh9Q==
+  dependencies:
+    "@kata-kit/button" "^0.7.3-canary.0"
+    "@kata-kit/common" "^0.7.1-canary.2"
+    "@kata-kit/theme" "^0.7.1-canary.0"
+    classnames "^2.2.6"
+    react-custom-scrollbars "^4.2.1"
+
+"@kata-kit/theme@^0.7.1-canary.0", "@kata-kit/theme@^0.7.2":
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/@kata-kit/theme/-/theme-0.7.2.tgz#d57aa3f1be069bf91de334eae0f3fc6580085a04"
   integrity sha512-lcmIHNIHCjoEP2B67aIAMsK1N0E98vG81H8c8n//WmEW6fg1q2wIJ5WiY9JBkr2qpqD3CfDdC/4qAmAhi3/xwg==
@@ -4928,6 +4948,14 @@ fn-name@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/fn-name/-/fn-name-3.0.0.tgz#0596707f635929634d791f452309ab41558e3c5c"
   integrity sha512-eNMNr5exLoavuAMhIUVsOKF79SWd/zG104ef6sxBTSw+cZc6BXdQXDvYcGvp0VbxVVSp1XDUNoz7mg1xMtSznA==
+
+focus-trap@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-3.0.0.tgz#4d2ee044ae66bf7eb6ebc6c93bd7a1039481d7dc"
+  integrity sha512-jTFblf0tLWbleGjj2JZsAKbgtZTdL1uC48L8FcmSDl4c2vDoU4NycN1kgV5vJhuq1mxNFkw7uWZ1JAGlINWvyw==
+  dependencies:
+    tabbable "^3.1.0"
+    xtend "^4.0.1"
 
 follow-redirects@1.5.10:
   version "1.5.10"
@@ -9157,6 +9185,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+pusher-js@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-5.1.1.tgz#267495d3a821d511bdb20cf3c624ba0556e0b7df"
+  integrity sha512-f2tdoA7NvJQkU8Y/iCH25ZSNGxnwCXrVbwos38isX6gnjsSZ1aksWvyZddm2N0sHJWyl+oPBz/MzU5cevVDyEQ==
+
 q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -9684,6 +9717,13 @@ react-overlays@^0.8.3:
     prop-types-extra "^1.0.1"
     react-transition-group "^2.2.0"
     warning "^3.0.0"
+
+react-particles-js@2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/react-particles-js/-/react-particles-js-2.7.1.tgz#3d5ad39a9e8cfc2052b3ba8ac1fbe28e66b4713e"
+  integrity sha512-H3lnlcnc35HRismahWl8n/1IBNvP1u78r1YdS+QigDYwGkv4Bxqjdp3qLkQOkQnGLzaO5iu+Z4TWnyLVxOKPtA==
+  dependencies:
+    lodash "^4.17.11"
 
 react-popper@^1.3.4:
   version "1.3.6"
@@ -11138,6 +11178,11 @@ synchronous-promise@^2.0.10:
   resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.10.tgz#e64c6fd3afd25f423963353043f4a68ebd397fd8"
   integrity sha512-6PC+JRGmNjiG3kJ56ZMNWDPL8hjyghF5cMXIFOKg+NiwwEZZIvxTWd0pinWKyD227odg9ygF8xVhhz7gb8Uq7A==
 
+tabbable@^3.1.0:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-3.1.2.tgz#f2d16cccd01f400e38635c7181adfe0ad965a4a2"
+  integrity sha512-wjB6puVXTYO0BSFtCmWQubA/KIn7Xvajw0x0l6eJUudMG/EAiJvIUnyNX6xO4NpGrJ16lbD0eUseB9WxW0vlpQ==
+
 table@^5.2.3:
   version "5.4.6"
   resolved "https://registry.yarnpkg.com/table/-/table-5.4.6.tgz#1292d19500ce3f86053b05f0e8e7e4a3bb21079e"
@@ -12210,7 +12255,7 @@ xregexp@4.0.0:
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.0.0.tgz#e698189de49dd2a18cc5687b05e17c8e43943020"
   integrity sha512-PHyM+sQouu7xspQQwELlGwwd05mXUFqwFYfqPO0cC7x4fxyHnnuetmQr6CjJiafIDoH4MogHb9dOoJzR/Y4rFg==
 
-xtend@^4.0.0, xtend@^4.0.2, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==

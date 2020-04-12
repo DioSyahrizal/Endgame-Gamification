@@ -5,13 +5,14 @@ import {
   Form,
   Segment,
   Button,
-  Message
+  Message,
 } from "semantic-ui-react";
 import { Formik } from "formik";
 import * as yup from "yup";
 
 import { LoginContainerProps } from "./Login.Container";
 import { Redirect } from "react-router";
+import Background from "assets/image/login.jpeg";
 
 interface Props extends LoginContainerProps {}
 
@@ -21,11 +22,8 @@ interface States {
 }
 
 const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Invalid email")
-    .required("Email is empty!"),
-  password: yup.string().required("Password is empty!")
+  email: yup.string().email("Invalid email").required("Email is empty!"),
+  password: yup.string().required("Password is empty!"),
 });
 
 export default class Login extends Component<Props> {
@@ -55,7 +53,11 @@ export default class Login extends Component<Props> {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{
+          height: "100vh",
+          backgroundImage: `url(${Background}) `,
+          backgroundSize: "cover",
+        }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -64,8 +66,8 @@ export default class Login extends Component<Props> {
               <Message.Header>{this.props.errors}</Message.Header>
             </Message>
           )}
-          <Header as="h2" color="teal" textAlign="center">
-            {/* <Image src='/logo.png' /> Log-in to your account */}
+          <Header as="h2" textAlign="center">
+            Gamification Primagama
           </Header>
           <Formik
             initialValues={{ email: "", password: "" }}

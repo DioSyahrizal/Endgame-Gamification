@@ -6,4 +6,8 @@ export interface User {
   address: string;
   point: number;
   role: string;
+  fis_med: string;
+  fis_hard: string;
+  kim_med: string;
+  kim_hard: string;
 }

@@ -5,10 +5,13 @@ import {
   Form,
   Segment,
   Button,
-  Message
+  Message,
 } from "semantic-ui-react";
 import axios from "axios";
 import { RouteComponentProps } from "react-router";
+
+import Background from "assets/image/login.jpeg";
+import { callApiWithoutToken } from "utils/api/callApi";
 
 interface Props extends RouteComponentProps {}
 
@@ -29,7 +32,7 @@ export default class Register extends Component<Props, States> {
       name: "",
       email: "",
       password: "",
-      address: ""
+      address: "",
     };
   }
 
@@ -40,10 +43,10 @@ export default class Register extends Component<Props, States> {
       username: this.state.username,
       password: this.state.password,
       address: this.state.address,
-      name: this.state.name
+      name: this.state.name,
     };
-    axios.post("http://localhost:5000/register", data).then(res => {
-      if (res.data.success) {
+    callApiWithoutToken("post", "/register", data).then((res) => {
+      if (res.success) {
         this.props.history.push("/login");
       } else {
         console.dir("Failed registration");
@@ -66,7 +69,7 @@ export default class Register extends Component<Props, States> {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{ height: "100vh", backgroundImage: `url(${Background}) ` }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>

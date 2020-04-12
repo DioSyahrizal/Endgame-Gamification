@@ -5,7 +5,7 @@ import { Link, LinkProps } from "react-router-dom";
 import dashboardLogo from "assets/image/dashboard.svg";
 import { ReactComponent as PhysicsLogo } from "assets/image/atom.svg";
 import { ReactComponent as ChemistryLogo } from "assets/image/chemistry.svg";
-import { ReactComponent as QuestLogo } from "assets/image/quest.svg";
+import { ReactComponent as QuestLogo } from "assets/image/search.svg";
 
 import { Dashboard as KataDashboard } from "@kata-kit/dashboard";
 
@@ -13,6 +13,8 @@ import styled from "styled-components";
 import HeaderContainer from "modules/core/profile/Header";
 
 import { AccountSelectorWrapper } from "./components";
+import Fisika from "assets/image/fisika.jpeg";
+import Kimia from "assets/image/kimia.jpeg";
 
 import * as env from "utils/env";
 
@@ -20,6 +22,10 @@ const GAMA_SERVICES = env.getRuntimeEnv(
   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
   env.defaultEnvs["REACT_APP_RUNTIME_GAMA_SERVICE_URL"]
 );
+
+const Title = styled("h3")`
+  color: white;
+`;
 
 const Dashboard = styled(KataDashboard)`
   .sc-brqgnP {
@@ -84,27 +90,33 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
             </Card>
             <Card title="Kimia" />
           </DashboardCards> */}
+
           <div className="flex flex-col">
             <div className="flex flex-row justify-between">
               <Board
-                to="/fisika"
+                to="/user/fisika"
                 style={{
                   color: "white",
-                  background: "#c02c26"
+                  backgroundImage: `url(${Fisika})`,
+                  backgroundSize: "100% 100%",
                 }}
                 className="flex flex-col bg-gray-500 m-2 p-4 w-full h-full rounded-md text-center items-center justify-center"
               >
                 <PhysicsLogo />
-                <h3>Physics Learn</h3>
+                <Title>Physics Learn</Title>
               </Board>
 
               <Board
                 to="/kimia"
-                style={{ color: "white", background: "#f19f1f" }}
+                style={{
+                  color: "white",
+                  backgroundImage: `url(${Kimia})`,
+                  backgroundSize: "100% 100%",
+                }}
                 className="flex flex-col bg-gray-500 m-2 p-4 w-full h-full rounded-md text-center items-center justify-center"
               >
                 <ChemistryLogo />
-                <h3>Chemistry Learn</h3>
+                <Title>Chemistry Learn</Title>
               </Board>
             </div>
             <Board
@@ -113,7 +125,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
               className="flex flex-col w-full h-full bg-gray-500 mr-4 py-4 rounded-md text-center items-center justify-center"
             >
               <QuestLogo />
-              <h3>Quest</h3>
+              <Title>Quest</Title>
             </Board>
           </div>
         </Dashboard>

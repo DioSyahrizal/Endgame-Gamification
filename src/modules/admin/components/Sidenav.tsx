@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Layout, Menu } from "antd";
 import { useHistory } from "react-router";
 import SideNavContext from "../context/SidenavContext";
+import LogoutButton from "modules/auth/LogoutButton";
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -24,46 +25,46 @@ const menu = [
     label: "Soal",
     icon: "book",
   },
-  {
-    key: "members",
-    label: "Member",
-    icon: "team",
-  },
-  {
-    key: "announcements",
-    label: "Announcements",
-    icon: "notification",
-  },
-  {
-    key: "news",
-    label: "Newsletter",
-    icon: "read",
-    subs: [
-      {
-        key: "manage-news",
-        label: "Manage News",
-      },
-      {
-        key: "manage-subscriber",
-        label: "Manage Subscriber",
-      },
-    ],
-  },
-  {
-    key: "admin",
-    label: "Admin",
-    icon: "appstore",
-    subs: [
-      {
-        key: "users",
-        label: "User",
-      },
-      {
-        key: "logs",
-        label: "Log",
-      },
-    ],
-  },
+  // {
+  //   key: "members",
+  //   label: "Member",
+  //   icon: "team",
+  // },
+  // {
+  //   key: "announcements",
+  //   label: "Announcements",
+  //   icon: "notification",
+  // },
+  // {
+  //   key: "news",
+  //   label: "Newsletter",
+  //   icon: "read",
+  //   subs: [
+  //     {
+  //       key: "manage-news",
+  //       label: "Manage News",
+  //     },
+  //     {
+  //       key: "manage-subscriber",
+  //       label: "Manage Subscriber",
+  //     },
+  //   ],
+  // },
+  // {
+  //   key: "admin",
+  //   label: "Admin",
+  //   icon: "appstore",
+  //   subs: [
+  //     {
+  //       key: "users",
+  //       label: "User",
+  //     },
+  //     {
+  //       key: "logs",
+  //       label: "Log",
+  //     },
+  //   ],
+  // },
 ];
 
 const SideNav = () => {
@@ -115,6 +116,7 @@ const SideNav = () => {
           );
         })}
       </Menu>
+      <LogoutButton />
     </Sider>
   );
 };
