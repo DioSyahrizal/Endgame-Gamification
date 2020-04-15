@@ -1,13 +1,38 @@
 import React, { Component } from "react";
 import { Card, Image, Progress, Container } from "semantic-ui-react";
-import difficulty from "./components/difficulty";
-import { RouteComponentProps } from "react-router";
+
 import HeaderContainer from "modules/core/profile/Header";
 import Particles from "react-particles-js";
+import { privateApi } from "utils/api/callApi";
+import { SoalProps } from "./Page.Container";
 // import Logo from "../../assets/image/saturn.png";
 
-export default class Page extends Component<RouteComponentProps> {
+interface States {
+  progress: { easy: number; med: number; hard: number };
+}
+
+export default class Page extends Component<SoalProps, States> {
+  constructor(props: SoalProps) {
+    super(props);
+
+    this.state = {
+      progress: { easy: 0, med: 0, hard: 0 },
+    };
+  }
+
+  componentDidMount = () => {
+    privateApi()
+      .get("/quiz/progress", {
+        params: {
+          id_user: this.props.selected && this.props.selected.id,
+          matpel: "Fisika",
+        },
+      })
+      .then((res) => this.setState({ progress: res.data }));
+  };
+
   render() {
+    const { progress } = this.state;
     return (
       <div>
         <div
@@ -44,37 +69,59 @@ export default class Page extends Component<RouteComponentProps> {
             }}
           />
           <div className="relative flex flex-col justify-around items-center lg:flex-row">
-            {difficulty.map((diff, id) => (
-              <div key={id} className="mb-6">
-                <Card
-                  style={{ borderRadius: 20 }}
-                  onClick={() =>
-                    this.props.history.push(
-                      `/user/fisika/${diff.difficulty.toLowerCase()}/1`
-                    )
-                  }
-                >
-                  <Image
-                    className="h-auto"
-                    src={diff.image}
-                    wrapped
-                    ui={false}
+            <div className="mb-6">
+              <Card
+                style={{ borderRadius: 20 }}
+                onClick={() => this.props.history.push(`/user/fisika/easy/1`)}
+              >
+                <Image
+                  className="h-auto"
+                  src={require("assets/image/saturn.png")}
+                  wrapped
+                  ui={false}
+                />
+                <Card.Content>
+                  <Card.Header>Easy</Card.Header>
+                  <Card.Description>This is an Easiest Test!</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <Progress
+                    value={progress.easy}
+                    total={5}
+                    progress="ratio"
+                    success={progress.easy === 5 ? true : false}
                   />
-                  <Card.Content>
-                    <Card.Header>{diff.difficulty}</Card.Header>
-                    <Card.Description>{diff.desc}</Card.Description>
-                  </Card.Content>
-                  <Card.Content extra>
-                    <Progress
-                      value={diff.progress}
-                      total={10}
-                      progress="ratio"
-                      success={diff.progress === 10 ? true : false}
-                    />
-                  </Card.Content>
-                </Card>
-              </div>
-            ))}
+                </Card.Content>
+              </Card>
+            </div>
+
+            <div className="mb-6">
+              <Card
+                style={{ borderRadius: 20 }}
+                onClick={() => this.props.history.push(`/user/fisika/medium/1`)}
+              >
+                <Image
+                  className="h-auto"
+                  src={require("assets/image/saturn.png")}
+                  wrapped
+                  ui={false}
+                />
+                <Card.Content>
+                  <Card.Header>Medium</Card.Header>
+                  <Card.Description>
+                    This is an Mediocore Test!
+                  </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <Progress
+                    value={progress.med}
+                    total={5}
+                    progress="ratio"
+                    success={progress.med === 5 ? true : false}
+                  />
+                </Card.Content>
+              </Card>
+            </div>
           </div>
         </Container>
       </div>

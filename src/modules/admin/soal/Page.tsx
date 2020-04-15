@@ -204,6 +204,7 @@ const Page: FC = () => {
             <Setable.Row>
               <Setable.HeaderCell singleLine>Pilihan 1</Setable.HeaderCell>
               <Setable.HeaderCell>Pilihan 2</Setable.HeaderCell>
+              <Setable.HeaderCell>Pilihan 3</Setable.HeaderCell>
               <Setable.HeaderCell>Pilihan 4</Setable.HeaderCell>
               <Setable.HeaderCell>Answer</Setable.HeaderCell>
             </Setable.Row>
@@ -214,14 +215,17 @@ const Page: FC = () => {
               <Setable.Cell>
                 {detailSoal && <MathWrapper text={detailSoal.opt1} />}
               </Setable.Cell>
-              <Setable.Cell singleLine>
+              <Setable.Cell>
                 {detailSoal && <MathWrapper text={detailSoal.opt2} />}
               </Setable.Cell>
               <Setable.Cell>
                 {detailSoal && <MathWrapper text={detailSoal.opt3} />}
               </Setable.Cell>
-              <Setable.Cell textAlign="right">
+              <Setable.Cell>
                 {detailSoal && <MathWrapper text={detailSoal.opt4} />}
+              </Setable.Cell>
+              <Setable.Cell>
+                {detailSoal && <MathWrapper text={detailSoal.answer} />}
               </Setable.Cell>
             </Setable.Row>
           </Setable.Body>

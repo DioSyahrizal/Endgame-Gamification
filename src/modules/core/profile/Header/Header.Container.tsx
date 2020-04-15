@@ -6,9 +6,12 @@ import { getScoreData } from "store/score/selectors";
 import { fetchScoreRequest } from "store/score/actions";
 import { Header } from "./Header";
 import { RootStore } from "interfaces/stores";
+import { getAuthSelected } from "store/auth/selectors";
+import { User } from "interfaces/user";
 
 interface PropsFromState {
   data: number;
+  selected?: User | null;
 }
 
 interface PropsFromDispatch {
@@ -31,8 +34,9 @@ class HeaderContainer extends React.Component<ScoreProps> {
   }
 }
 
-const mapStateToProps = ({ score }: RootStore): PropsFromState => ({
+const mapStateToProps = ({ score, auth }: RootStore): PropsFromState => ({
   data: getScoreData(score),
+  selected: getAuthSelected(auth),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => ({

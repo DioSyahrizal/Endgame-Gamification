@@ -23,8 +23,9 @@ export const Header: FC<ScoreProps> = (props) => {
       <Grid.Column style={{ color: props.color ? props.color : "white" }}>
         {props.data}
       </Grid.Column>
+      <Grid.Column>{props.selected && props.selected.name}</Grid.Column>
       <Grid.Column>
-        <ProfileMenu />
+        <ProfileMenu selected={props.selected} />
       </Grid.Column>
     </Grid.Container>
   );

@@ -6,7 +6,7 @@ import * as env from "utils/env";
 
 import { getAuthToken } from "store/auth/selectors";
 import { validate } from "store/auth/sagas";
-import { getToken } from "./token";
+import { getToken, getFromLocalStorage } from "./token";
 
 export const API_URL_ENDPOINT = env.getRuntimeEnv(
   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
@@ -64,10 +64,8 @@ export function callApiWithoutToken(
   }).then((resp) => resp.data);
 }
 
-const token = getToken();
-
 export function privateApi() {
-  const authToken = token && token.token;
+  const authToken = getFromLocalStorage("auth_selected").token;
   const instance = axios.create({
     baseURL: API_URL_ENDPOINT,
     headers: {

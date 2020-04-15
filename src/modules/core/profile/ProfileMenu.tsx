@@ -7,8 +7,13 @@ import { Menu } from "./components";
 import { DropdownItem } from "@kata-kit/dropdown";
 import { RouteComponentProps, withRouter } from "react-router";
 import LogoutButton from "modules/auth/LogoutButton";
+import { User } from "interfaces/user";
 
-interface ProfileMenuProps extends RouteComponentProps {}
+interface MenuProps {
+  selected: User | null | undefined;
+}
+
+interface ProfileMenuProps extends MenuProps, RouteComponentProps {}
 
 interface ProfileMenuStates {
   isOpen: boolean;
@@ -27,10 +32,11 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
 
   render() {
     const { isOpen } = this.state;
+    const { selected } = this.props;
 
     return (
       <Menu.Main
-        title={`Logged in as User`}
+        title={`Logged in as ${selected && selected.name}`}
         className={isOpen ? "is-active" : ""}
       >
         <Menu.Row>
@@ -43,7 +49,12 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
               <Menu.DropdownToggle isOpen={isOpen} toggle={this.handleToggle} />
               <Menu.DropdownMenu isOpen={isOpen}>
                 <Menu.DropdownItem>
-                  <Menu.NavLink to={`/setting/account`}>Account</Menu.NavLink>
+                  <Menu.NavLink to={`/user/leaderboard`}>
+                    Leaderboard
+                  </Menu.NavLink>
+                </Menu.DropdownItem>
+                <Menu.DropdownItem>
+                  <Menu.NavLink to={"/"}>My Badge</Menu.NavLink>
                 </Menu.DropdownItem>
 
                 <DropdownItem divider />
