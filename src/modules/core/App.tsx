@@ -1,23 +1,35 @@
 import React, { Component, Fragment, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router";
 import LoadingCircle from "../../components/LoadingCircle";
+import { AppProps } from "./App.Container";
 
-const Dashboardmain = React.lazy(() => import("../dashboard"));
-const Fisika = React.lazy(() => import("../fisika"));
-const Soal = React.lazy(() => import("../fisika/soal"));
-const Leaderboard = React.lazy(() => import("../leaderboard"));
+const User = React.lazy(() => import("../user"));
+const Admin = React.lazy(() => import("../admin"));
 
-export default class App extends Component {
+export default class App extends Component<AppProps> {
   render() {
+    const { selected } = this.props;
     return (
       <Fragment>
         <Suspense fallback={<LoadingCircle />}>
           <Switch>
-            <Route path="/dashboard" exact component={Dashboardmain} />
-            <Route path="/fisika" exact component={Fisika} />
-            <Route path="/fisika/(easy|medium|hard)" component={Soal} />
-            <Route path="/leaderboard" component={Leaderboard} />
-            <Route render={() => <Redirect to="/dashboard" />} />
+            {selected && selected.role === "user" ? (
+              <Route path="/user" component={User} />
+            ) : (
+              <Route path="/admin" component={Admin} />
+            )}
+
+            <Route
+              render={props => {
+                if (selected && selected.role === "user") {
+                  return <Route render={() => <Redirect to="/user" />} />;
+                }
+                if (selected && selected.role === "admin") {
+                  return <Route render={() => <Redirect to="/admin" />} />;
+                }
+                return <Route render={() => <Redirect to="/" />} />;
+              }}
+            />
           </Switch>
         </Suspense>
       </Fragment>

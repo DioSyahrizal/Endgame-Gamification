@@ -10,19 +10,24 @@ import { ScoreProps } from "./Header.Container";
 
 // type HeaderPropsColors = HeaderProps & ScoreProps;
 
-export const Header: FC<ScoreProps> = props => {
+export const Header: FC<ScoreProps> = (props) => {
   return (
     <Grid.Container verticalAlign="middle" space={22}>
-      <Grid.Column>
-        <img
-          src={require("assets/image/coin.svg")}
-          alt="coin-img"
-          style={{ width: "30px", height: "30px" }}
-        />
+      <Grid.Column style={{ color: props.color ? props.color : "white" }}>
+        <div className="flex flex-row justify-center items-center">
+          <p className="pt-4 mr-2">{props.data}</p>
+          <img
+            src={require("assets/image/coin.svg")}
+            alt="coin-img"
+            style={{ width: "30px", height: "30px" }}
+          />
+        </div>
       </Grid.Column>
-      <Grid.Column>{props.data}</Grid.Column>
+      <Grid.Column style={{ color: props.color ? props.color : "white" }}>
+        {props.selected && props.selected.name}
+      </Grid.Column>
       <Grid.Column>
-        <ProfileMenu />
+        <ProfileMenu selected={props.selected} />
       </Grid.Column>
     </Grid.Container>
   );
