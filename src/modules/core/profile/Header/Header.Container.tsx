@@ -6,29 +6,41 @@ import { getScoreData } from "store/score/selectors";
 import { fetchScoreRequest } from "store/score/actions";
 import { Header } from "./Header";
 import { RootStore } from "interfaces/stores";
+import { getAuthSelected } from "store/auth/selectors";
+import { User } from "interfaces/user";
 
 interface PropsFromState {
   data: number;
+  selected?: User | null;
 }
 
 interface PropsFromDispatch {
-  fetchRequest: (id: number) => ReturnType<typeof fetchScoreRequest>;
+  fetchRequest: () => ReturnType<typeof fetchScoreRequest>;
 }
 
-export type ScoreProps = PropsFromDispatch & PropsFromState;
+interface ColorProps {
+  color?: string;
+}
+
+export type ScoreProps = PropsFromDispatch & PropsFromState & ColorProps;
 
 class HeaderContainer extends React.Component<ScoreProps> {
+  componentDidMount = () => {
+    this.props.fetchRequest();
+  };
+
   render() {
     return <Header {...this.props} />;
   }
 }
 
-const mapStateToProps = ({ score }: RootStore): PropsFromState => ({
-  data: getScoreData(score)
+const mapStateToProps = ({ score, auth }: RootStore): PropsFromState => ({
+  data: getScoreData(score),
+  selected: getAuthSelected(auth),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => ({
-  fetchRequest: (id: number) => dispatch(fetchScoreRequest(id))
+  fetchRequest: () => dispatch(fetchScoreRequest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);

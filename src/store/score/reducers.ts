@@ -5,7 +5,7 @@ import { ScoreActionTypes } from "./types";
 const initialState: ScoreState = {
   errors: null,
   loading: false,
-  data: 100
+  data: 110,
 };
 
 const errors: Reducer<ScoreState["errors"]> = (
@@ -46,8 +46,7 @@ const data: Reducer<ScoreState["data"]> = (
 ) => {
   switch (type) {
     case ScoreActionTypes.FETCH_SCORE_SUCCESS: {
-      let updatedScore = state + payload;
-      return updatedScore;
+      return payload;
     }
     default: {
       return state;
@@ -58,5 +57,5 @@ const data: Reducer<ScoreState["data"]> = (
 export const scoreReducer = combineReducers<ScoreState>({
   errors,
   loading,
-  data
+  data,
 });

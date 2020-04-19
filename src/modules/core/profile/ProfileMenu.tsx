@@ -6,8 +6,14 @@ import { ReactComponent as SettingIcon } from "assets/icon/ic_setting.svg";
 import { Menu } from "./components";
 import { DropdownItem } from "@kata-kit/dropdown";
 import { RouteComponentProps, withRouter } from "react-router";
+import LogoutButton from "modules/auth/LogoutButton";
+import { User } from "interfaces/user";
 
-interface ProfileMenuProps extends RouteComponentProps {}
+interface MenuProps {
+  selected: User | null | undefined;
+}
+
+interface ProfileMenuProps extends MenuProps, RouteComponentProps {}
 
 interface ProfileMenuStates {
   isOpen: boolean;
@@ -15,39 +21,45 @@ interface ProfileMenuStates {
 
 class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   handleToggle = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
+    this.setState((prevState) => ({
+      isOpen: !prevState.isOpen,
     }));
   };
 
   render() {
     const { isOpen } = this.state;
+    const { selected } = this.props;
 
     return (
       <Menu.Main
-        title={`Logged in as User`}
+        title={`Logged in as ${selected && selected.name}`}
         className={isOpen ? "is-active" : ""}
       >
         <Menu.Row>
           <Menu.Info onClick={this.handleToggle}>
             {renderIcon(SettingIcon)}
-            <Menu.Text>Settings</Menu.Text>
+            <Menu.Text>Menu</Menu.Text>
           </Menu.Info>
           <Menu.Item>
             <Menu.Dropdown isOpen={isOpen}>
               <Menu.DropdownToggle isOpen={isOpen} toggle={this.handleToggle} />
               <Menu.DropdownMenu isOpen={isOpen}>
                 <Menu.DropdownItem>
-                  <Menu.NavLink to={`/setting/account`}>Account</Menu.NavLink>
+                  <Menu.NavLink to={`/user/leaderboard`}>
+                    Leaderboard
+                  </Menu.NavLink>
+                </Menu.DropdownItem>
+                <Menu.DropdownItem>
+                  <Menu.NavLink to={"/"}>My Badge</Menu.NavLink>
                 </Menu.DropdownItem>
 
                 <DropdownItem divider />
                 <Menu.DropdownItem>
-                  <Menu.NavLink to={`/logout`}>Logout</Menu.NavLink>
+                  <LogoutButton />
                 </Menu.DropdownItem>
               </Menu.DropdownMenu>
             </Menu.Dropdown>

@@ -1,15 +1,24 @@
-import { ReduxAction } from "interfaces";
-import { put, all, takeLatest, fork } from "redux-saga/effects";
+import { put, all, takeLatest, fork, call, select } from "redux-saga/effects";
 import { fetchScoreSuccess } from "./actions";
 import { ScoreActionTypes } from "./types";
+import { callApi } from "utils/api/callApi";
+import { RootStore } from "interfaces/stores";
+import { getAuthSelected } from "store/auth/selectors";
 
-const dummyScore = 200;
-
-function* handleFetchScore({ payload }: ReduxAction) {
+function* handleFetchScore() {
   try {
-    yield console.dir(payload);
-    yield put(fetchScoreSuccess(dummyScore));
-  } catch (error) {}
+    const selectedClient = yield select(({ auth }: RootStore) =>
+      getAuthSelected(auth)
+    );
+    const res = yield call(
+      callApi,
+      "get",
+      `/score?id_user=${selectedClient.id}`
+    );
+    yield put(fetchScoreSuccess(res.point));
+  } catch (error) {
+    yield console.dir("error");
+  }
 }
 
 function* watchFetchRequest() {
