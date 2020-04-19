@@ -6,7 +6,7 @@ import * as env from "utils/env";
 
 import { getAuthToken } from "store/auth/selectors";
 import { validate } from "store/auth/sagas";
-import { getToken, getFromLocalStorage } from "./token";
+import { getFromLocalStorage } from "./token";
 
 export const API_URL_ENDPOINT = env.getRuntimeEnv(
   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",

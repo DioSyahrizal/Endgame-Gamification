@@ -40,7 +40,6 @@ class KimiaLead extends Component<Props, States> {
       .get("/leaderboard/kimia", { params: { level: this.props.level } })
       .then((res) => {
         this.setState({ data: res.data });
-        console.dir(res.data);
       });
   }
 

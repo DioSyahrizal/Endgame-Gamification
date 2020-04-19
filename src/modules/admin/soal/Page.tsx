@@ -1,12 +1,12 @@
 import React, { useState, FC, useContext } from "react";
-import { Typography, Table, Button, Drawer } from "antd";
+import { Typography, Table, Button, Drawer, Select } from "antd";
 import {
   Button as SemanticButton,
   TextArea,
   Table as Setable,
 } from "semantic-ui-react";
 import * as yup from "yup";
-import XLSX from "xlsx";
+
 import MathWrapper from "components/MathWrapper";
 import SideNavContext from "../context/SidenavContext";
 import { useOnMount } from "utils/hooks";
@@ -18,7 +18,7 @@ import { Form } from "semantic-ui-react";
 import { SoalInterface } from "interfaces/soal";
 
 const Page: FC = () => {
-  // const [text, setText] = useState("Soal ini adalah $$U= 1/2$$");
+  const { Option } = Select;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -40,9 +40,10 @@ const Page: FC = () => {
     profileImg: yup.mixed().label("File"),
   });
 
-  const loadData = () => {
+  const loadData = (matpel?: string) => {
+    const param = matpel ? { params: { matpel: matpel } } : {};
     privateApi()
-      .get("/soal")
+      .get("/soal/all", param)
       .then((res) => {
         setData(res.data.data);
         setLoading(false);
@@ -64,6 +65,7 @@ const Page: FC = () => {
         loadData();
       })
       .catch((err) => console.error(err));
+    setImage("");
   };
 
   const getBase64 = (file: any) => {
@@ -103,7 +105,11 @@ const Page: FC = () => {
       key: "question",
       dataIndex: "question",
       render: (text: string, data: any) => {
-        return <p onClick={() => setDetailSoal(data)}>{textFormat(text)}</p>;
+        return (
+          <p onClick={() => setDetailSoal(data)} style={{ cursor: "pointer" }}>
+            {textFormat(text)}
+          </p>
+        );
       },
     },
     {
@@ -167,7 +173,12 @@ const Page: FC = () => {
       key: "image",
       dataIndex: "image",
       render: (text: string) => {
-        return <img src={text ? `data:image/png;base64,${text}` : ""} />;
+        return text ? (
+          <img
+            src={text ? `data:image/png;base64,${text}` : ""}
+            alt="gambar-soal"
+          />
+        ) : null;
       },
     },
   ];
@@ -190,8 +201,7 @@ const Page: FC = () => {
         bodyStyle={{ paddingBottom: 80 }}
       >
         <div>
-          {" "}
-          <MathWrapper text={detailSoal ? detailSoal.question : ""} />{" "}
+          <MathWrapper text={detailSoal ? detailSoal.question : ""} />
         </div>
         {detailSoal && detailSoal.image ? (
           <img
@@ -319,14 +329,22 @@ const Page: FC = () => {
                   placeholder="opt4"
                   label="Pilihan 4"
                 />
-                <Form.Input
+
+                <Form.Select
+                  id="key"
                   name="answer"
-                  onChange={handleChange}
-                  value={values.answer}
-                  error={errors.answer ? { content: errors.answer } : null}
                   fluid
                   placeholder="Jawaban"
                   label="Jawaban"
+                  onChange={(e, v) => setFieldValue("answer", v.value)}
+                  value={values.answer}
+                  error={errors.answer ? { content: errors.answer } : null}
+                  options={[
+                    { key: "1", text: values.opt1, value: values.opt1 },
+                    { key: "2", text: values.opt2, value: values.opt2 },
+                    { key: "3", text: values.opt3, value: values.opt3 },
+                    { key: "4", text: values.opt4, value: values.opt4 },
+                  ]}
                 />
 
                 <Form.Select
@@ -380,7 +398,7 @@ const Page: FC = () => {
                   onChange={handleFileInputChange}
                   style={{ marginBottom: 10 }}
                 />
-                <img src={image ? image : ""} />
+                <img src={image ? image : ""} alt="soal-gambar" />
                 {values.profileImg && <p>{values.profileImg}</p>}
 
                 <SemanticButton
@@ -398,9 +416,20 @@ const Page: FC = () => {
       </Drawer>
       <div className="flex justify-between items-center">
         <Typography.Title level={2}>Soal</Typography.Title>
-        <Button type="primary" onClick={() => setOpen(true)}>
-          Tambah Soal
-        </Button>
+        <div className="flex flex-row justify-center">
+          <Select
+            defaultValue=""
+            style={{ width: 120 }}
+            onChange={(values) => loadData(values)}
+          >
+            <Option value="">All</Option>
+            <Option value="fisika">Fisika</Option>
+            <Option value="kimia">Kimia</Option>
+          </Select>
+          <Button type="primary" className="ml-4" onClick={() => setOpen(true)}>
+            Tambah Soal
+          </Button>
+        </div>
       </div>
       <Table columns={columns} dataSource={data} loading={loading} />
       {/* <div className="font-bold">

@@ -1,4 +1,3 @@
-import { ReduxAction } from "interfaces";
 import { put, all, takeLatest, fork, call, select } from "redux-saga/effects";
 import { fetchScoreSuccess } from "./actions";
 import { ScoreActionTypes } from "./types";

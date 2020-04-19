@@ -11,7 +11,7 @@ import { notification } from "antd";
 
 interface States {
   progress: { easy: number; med: number; hard: number };
-  menu: { fis_med: string; fis_hard: string };
+  menu: { kim_med: string; kim_hard: string };
   isModalOpen: boolean;
   selectedLevel: string;
 }
@@ -22,7 +22,7 @@ export default class Page extends Component<SoalProps, States> {
 
     this.state = {
       progress: { easy: 0, med: 0, hard: 0 },
-      menu: { fis_med: "lock", fis_hard: "lock" },
+      menu: { kim_med: "lock", kim_hard: "lock" },
       isModalOpen: false,
       selectedLevel: "",
     };
@@ -34,7 +34,7 @@ export default class Page extends Component<SoalProps, States> {
       .get("/quiz/progress", {
         params: {
           id_user: selected && selected.id,
-          matpel: "Fisika",
+          matpel: "Kimia",
         },
       })
       .then((res) => this.setState({ progress: res.data }));
@@ -47,7 +47,7 @@ export default class Page extends Component<SoalProps, States> {
   buyLevel = (diff: string) => {
     const { selected } = this.props;
     privateApi()
-      .put(`/menu/unlock/fisika/${diff}`, { id_user: selected && selected.id })
+      .put(`/menu/unlock/kimia/${diff}`, { id_user: selected && selected.id })
       .then((res) => this.setState({ menu: res.data, isModalOpen: false }))
       .catch((error) => {
         notification["error"]({
@@ -95,7 +95,7 @@ export default class Page extends Component<SoalProps, States> {
           className="flex flex-row justify-between items-center content-center py-6 px-12"
           style={{ backgroundColor: "#d64141" }}
         >
-          <h2 style={{ margin: 0, color: "white" }}>Fisika</h2>
+          <h2 style={{ margin: 0, color: "white" }}>Kimia</h2>
           <HeaderContainer color="black" />
         </div>
         <Container style={{ marginTop: 20 }}>
@@ -127,7 +127,7 @@ export default class Page extends Component<SoalProps, States> {
           <div className="relative flex flex-col justify-around items-center lg:flex-row">
             <div className="mb-6">
               <Card
-                onClick={() => this.props.history.push(`/user/fisika/easy/1`)}
+                onClick={() => this.props.history.push(`/user/kimia/easy/1`)}
               >
                 <Image
                   className="h-auto"
@@ -150,11 +150,11 @@ export default class Page extends Component<SoalProps, States> {
               </Card>
             </div>
 
-            {menu.fis_med === "open" ? (
+            {menu.kim_med === "open" ? (
               <div className="mb-6">
                 <Card
                   onClick={() =>
-                    this.props.history.push(`/user/fisika/medium/1`)
+                    this.props.history.push(`/user/kimia/medium/1`)
                   }
                 >
                   <Image
@@ -222,10 +222,10 @@ export default class Page extends Component<SoalProps, States> {
               </div>
             )}
 
-            {menu.fis_hard === "open" ? (
+            {menu.kim_hard === "open" ? (
               <div className="mb-6">
                 <Card
-                  onClick={() => this.props.history.push(`/user/fisika/hard/1`)}
+                  onClick={() => this.props.history.push(`/user/kimia/hard/1`)}
                 >
                   <Image
                     className="h-auto"

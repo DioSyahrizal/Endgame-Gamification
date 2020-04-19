@@ -7,7 +7,7 @@ import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
-import { FisikaProps } from "./Page.Container";
+import { KimiaProps } from "./Page.Container";
 import MathWrapper from "components/MathWrapper";
 import { capitalizeFirstLetter } from "utils/helper";
 import { Link } from "react-router-dom";
@@ -33,8 +33,8 @@ const Box = styled("div")`
   margin-bottom: 30px;
 `;
 
-export default class Page extends Component<FisikaProps, Easyfis> {
-  constructor(props: FisikaProps) {
+export default class Page extends Component<KimiaProps, Easyfis> {
+  constructor(props: KimiaProps) {
     super(props);
 
     this.state = {
@@ -65,7 +65,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
     privateApi()
       .post("/quiz/generate", {
         id_user: selected && selected.id,
-        matpel: "fisika",
+        matpel: "kimia",
         level: capitalizeFirstLetter(match.params.diff),
       })
       .then((res) =>
@@ -75,7 +75,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
               .get(`/quiz/soal/${this.state.selected - 1}`, {
                 params: {
                   id_user: selected && selected.id,
-                  matpel: "fisika",
+                  matpel: "kimia",
                   level: capitalizeFirstLetter(match.params.diff),
                 },
               })
@@ -114,12 +114,12 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       if (this.state.selected === 5) {
         privateApi()
           .put("/quiz/correction", data)
-          .then((res) => {
+          .then((_res) => {
             privateApi()
               .post("/quiz/score", {
                 id_user: selected && selected.id,
                 level: capitalizeFirstLetter(match.params.diff),
-                matpel: "fisika",
+                matpel: "kimia",
               })
               .then((data) =>
                 this.setState({ score: data.data.score, isModalOpen: true })
@@ -128,7 +128,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       } else {
         const id = this.state.selected + 1;
         this.setState({ selected: id });
-        history.push(`/user/fisika/${match.params.diff}/${id}`);
+        history.push(`/user/kimia/${match.params.diff}/${id}`);
       }
     } else {
       notification["warning"]({
@@ -144,11 +144,11 @@ export default class Page extends Component<FisikaProps, Easyfis> {
   review = () => {
     const { history, match } = this.props;
     if (this.state.selected === 5) {
-      history.push("/user/fisika");
+      history.push("/user/kimia");
     } else {
       const id = this.state.selected + 1;
       this.setState({ selected: id });
-      history.push(`/user/fisika/${match.params.diff}/${id}`);
+      history.push(`/user/kimia/${match.params.diff}/${id}`);
     }
   };
 
@@ -156,7 +156,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
     const { history, match } = this.props;
     const id = this.state.selected - 1;
     this.setState({ selected: id });
-    history.push(`/user/fisika/${match.params.diff}/${id}`);
+    history.push(`/user/kimia/${match.params.diff}/${id}`);
   };
 
   componentDidUpdate(_prevProps: any, prevState: { selected: number }) {
@@ -167,7 +167,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
         .get(`/quiz/soal/${match.params.id - 1}`, {
           params: {
             id_user: this.props.selected && this.props.selected.id,
-            matpel: "fisika",
+            matpel: "kimia",
             level: match.params.diff,
           },
         })
@@ -190,7 +190,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       >
         <Modal
           show={isModalOpen}
-          onClose={() => this.setState({ isModalOpen: false })}
+          onClose={() => this.setState({ isModalOpen: true })}
         >
           <ModalBody>
             <div className="m-6 text-center">
@@ -202,36 +202,27 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             </div>
           </ModalBody>
         </Modal>
+        <div className="flex flex-row justify-between">
+          {data.result !== null && selected !== 1 ? (
+            <Button onClick={() => this.back()}>Prev</Button>
+          ) : (
+            <div />
+          )}
+          {data.result === null ? (
+            <Button onClick={() => this.submit(data.id_soaluser)}>
+              {selected === 5 ? "Submit" : "Next"}
+            </Button>
+          ) : (
+            <Button onClick={() => this.review()}>
+              {selected === 5 ? "Go to Menu" : "Next"}
+            </Button>
+          )}
+        </div>
 
         <Container textAlign="center">
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            {data.result !== null && selected !== 1 ? (
-              <Button onClick={() => this.back()}>Prev</Button>
-            ) : (
-              <div />
-            )}
-            {data.result === null ? (
-              <Button
-                color="green"
-                onClick={() => this.submit(data.id_soaluser)}
-              >
-                {selected === 5 ? "Submit" : "Next"}
-              </Button>
-            ) : (
-              <Button color="green" onClick={() => this.review()}>
-                {selected === 5 ? "Go to Menu" : "Next"}
-              </Button>
-            )}
-          </div>
           <Box>
             <h2 style={{ whiteSpace: "pre-line", textAlign: "justify" }}>
               <MathWrapper text={data ? data.question : ""} />

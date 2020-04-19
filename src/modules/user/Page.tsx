@@ -4,7 +4,9 @@ import { Switch, Route, Redirect } from "react-router";
 
 const Dashboardmain = React.lazy(() => import("./dashboard"));
 const Fisika = React.lazy(() => import("./fisika"));
-const Soal = React.lazy(() => import("./fisika/soal"));
+const SoalFisika = React.lazy(() => import("./fisika/soal"));
+const Kimia = React.lazy(() => import("./kimia"));
+const SoalKimia = React.lazy(() => import("./kimia/soal"));
 const Leaderboard = React.lazy(() => import("./leaderboard"));
 
 const Page: React.FC = () => {
@@ -22,7 +24,13 @@ const Page: React.FC = () => {
           <Route
             path={`${parentPath}/fisika/:diff/:id`}
             exact
-            component={Soal}
+            component={SoalFisika}
+          />
+          <Route path={`${parentPath}/kimia`} exact component={Kimia} />
+          <Route
+            path={`${parentPath}/kimia/:diff/:id`}
+            exact
+            component={SoalKimia}
           />
           <Route path={`${parentPath}/leaderboard`} component={Leaderboard} />
           <Route render={() => <Redirect to={`${parentPath}/dashboard`} />} />

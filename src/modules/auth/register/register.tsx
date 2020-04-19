@@ -7,7 +7,6 @@ import {
   Button,
   Message,
 } from "semantic-ui-react";
-import axios from "axios";
 import { RouteComponentProps } from "react-router";
 
 import Background from "assets/image/login.jpeg";

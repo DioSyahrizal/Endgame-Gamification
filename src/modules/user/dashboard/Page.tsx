@@ -29,8 +29,10 @@ const Title = styled("h3")`
 
 const Dashboard = styled(KataDashboard)`
   .sc-brqgnP {
-    width: 426px;
+    width: 326px;
     height: 240px;
+    margin-right: 40px;
+    margin-top: 40px;
   }
   .cueDVP {
     background: linear-gradient(to right, black, blue);
@@ -107,7 +109,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
               </Board>
 
               <Board
-                to="/kimia"
+                to="/user/kimia"
                 style={{
                   color: "white",
                   backgroundImage: `url(${Kimia})`,
