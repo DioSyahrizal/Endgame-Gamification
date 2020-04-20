@@ -15,7 +15,7 @@ export const Header: FC<ScoreProps> = (props) => {
     <Grid.Container verticalAlign="middle" space={22}>
       <Grid.Column style={{ color: props.color ? props.color : "white" }}>
         <div className="flex flex-row justify-center items-center">
-          <p className="pt-4 mr-2">{props.data}</p>
+          <p className="mr-2">{props.data}</p>
           <img
             src={require("assets/image/coin.svg")}
             alt="coin-img"
