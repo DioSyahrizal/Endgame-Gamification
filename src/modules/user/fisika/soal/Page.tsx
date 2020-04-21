@@ -13,6 +13,7 @@ import { capitalizeFirstLetter } from "utils/helper";
 import { Link } from "react-router-dom";
 import { SoalUserInterface } from "interfaces/soal";
 import { notification } from "antd";
+import LoadingPara from "components/LoadingPara";
 
 interface Easyfis {
   data: SoalUserInterface;
@@ -20,6 +21,7 @@ interface Easyfis {
   selected: number;
   isModalOpen: boolean;
   score: number;
+  loading: boolean;
 }
 
 const Box = styled("div")`
@@ -52,7 +54,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
         id_soaluser: 0,
         result: null,
       },
-
+      loading: false,
       pilih: "",
       selected: parseInt(this.props.match.params.id),
       isModalOpen: false,
@@ -62,6 +64,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
 
   componentDidMount() {
     const { selected, match } = this.props;
+    this.setState({ loading: true });
     privateApi()
       .post("/quiz/generate", {
         id_user: selected && selected.id,
@@ -80,10 +83,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
                 },
               })
               .then((res) => {
-                this.setState({ data: res.data.data });
+                this.setState({ data: res.data.data, loading: false });
               });
           },
-          res.data.status === "Already add!" ? 0 : 2000
+          res.data.status === "Already add!" ? 0 : 1000
         )
       );
   }
@@ -162,7 +165,9 @@ export default class Page extends Component<FisikaProps, Easyfis> {
   componentDidUpdate(_prevProps: any, prevState: { selected: number }) {
     const { selected } = this.state;
     const { match } = this.props;
+
     if (prevState.selected !== selected) {
+      this.setState({ loading: true });
       privateApi()
         .get(`/quiz/soal/${match.params.id - 1}`, {
           params: {
@@ -172,13 +177,13 @@ export default class Page extends Component<FisikaProps, Easyfis> {
           },
         })
         .then((res) => {
-          this.setState({ data: res.data.data });
+          this.setState({ data: res.data.data, loading: false });
         });
     }
   }
 
   render() {
-    const { data, pilih, selected, isModalOpen, score } = this.state;
+    const { data, pilih, selected, isModalOpen, score, loading } = this.state;
 
     return (
       <Dashboard
@@ -234,7 +239,11 @@ export default class Page extends Component<FisikaProps, Easyfis> {
           </div>
           <Box>
             <h2 style={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-              <MathWrapper text={data ? data.question : ""} />
+              {loading ? (
+                <LoadingPara />
+              ) : (
+                <MathWrapper text={data ? data.question : ""} />
+              )}
             </h2>
 
             {data.image && (

@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Card, Image, Progress, Container, Button } from "semantic-ui-react";
+import {
+  Card,
+  Image,
+  Progress,
+  Container,
+  Button,
+  Placeholder,
+} from "semantic-ui-react";
 import { Modal, ModalBody } from "@kata-kit/modal";
 import Particles from "react-particles-js";
 
@@ -14,6 +21,7 @@ interface States {
   menu: { fis_med: string; fis_hard: string };
   isModalOpen: boolean;
   selectedLevel: string;
+  loading: boolean;
 }
 
 export default class Page extends Component<SoalProps, States> {
@@ -25,11 +33,13 @@ export default class Page extends Component<SoalProps, States> {
       menu: { fis_med: "lock", fis_hard: "lock" },
       isModalOpen: false,
       selectedLevel: "",
+      loading: false,
     };
   }
 
   componentDidMount = () => {
     const { selected } = this.props;
+    this.setState({ loading: true });
     privateApi()
       .get("/quiz/progress", {
         params: {
@@ -41,7 +51,7 @@ export default class Page extends Component<SoalProps, States> {
 
     privateApi()
       .get(`/menu/${selected && selected.id}`)
-      .then((res) => this.setState({ menu: res.data }));
+      .then((res) => this.setState({ menu: res.data, loading: false }));
   };
 
   buyLevel = (diff: string) => {
@@ -64,7 +74,7 @@ export default class Page extends Component<SoalProps, States> {
   };
 
   render() {
-    const { progress, menu, isModalOpen, selectedLevel } = this.state;
+    const { progress, menu, isModalOpen, selectedLevel, loading } = this.state;
     return (
       <div>
         <Modal
@@ -191,15 +201,22 @@ export default class Page extends Component<SoalProps, States> {
                     )
                   }
                 >
-                  <Image
-                    className="h-auto"
-                    src={require("assets/icon/lock.svg")}
-                    wrapped
-                    ui={false}
-                    style={{
-                      padding: 20,
-                    }}
-                  />
+                  {loading ? (
+                    <Placeholder>
+                      <Placeholder.Image square />
+                    </Placeholder>
+                  ) : (
+                    <Image
+                      className="h-auto"
+                      src={require("assets/icon/lock.svg")}
+                      wrapped
+                      ui={false}
+                      style={{
+                        padding: 20,
+                      }}
+                    />
+                  )}
+
                   <Card.Content>
                     <Card.Header>Medium</Card.Header>
                     <Card.Description>
@@ -261,15 +278,22 @@ export default class Page extends Component<SoalProps, States> {
                     )
                   }
                 >
-                  <Image
-                    className="h-auto"
-                    src={require("assets/icon/lock.svg")}
-                    wrapped
-                    ui={false}
-                    style={{
-                      padding: 20,
-                    }}
-                  />
+                  {loading ? (
+                    <Placeholder>
+                      <Placeholder.Image square />
+                    </Placeholder>
+                  ) : (
+                    <Image
+                      className="h-auto"
+                      src={require("assets/icon/lock.svg")}
+                      wrapped
+                      ui={false}
+                      style={{
+                        padding: 20,
+                      }}
+                    />
+                  )}
+
                   <Card.Content>
                     <Card.Header>Hard</Card.Header>
                     <Card.Description>
