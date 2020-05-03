@@ -18,10 +18,9 @@ export interface SoalUserInterface {
   opt2: string;
   opt3: string;
   opt4: string;
-  answer: string;
   level: string;
   image: string;
   matpel: string;
   id_soaluser: number;
-  result: boolean | null;
+  result: string | null;
 }

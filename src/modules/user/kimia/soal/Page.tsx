@@ -21,6 +21,7 @@ interface Easyfis {
   isModalOpen: boolean;
   score: number;
   loading: boolean;
+  answer: string;
 }
 
 const Box = styled("div")`
@@ -46,13 +47,13 @@ export default class Page extends Component<KimiaProps, Easyfis> {
         opt2: "",
         opt3: "",
         opt4: "",
-        answer: "",
         image: "",
         level: "",
         matpel: "",
         id_soaluser: 0,
         result: null,
       },
+      answer: "",
       loading: false,
       pilih: "",
       selected: parseInt(this.props.match.params.id),
@@ -82,7 +83,20 @@ export default class Page extends Component<KimiaProps, Easyfis> {
                 },
               })
               .then((res) => {
-                this.setState({ data: res.data.data, loading: true });
+                if (res.data.data.result) {
+                  privateApi()
+                    .get(`/quiz/answer/`, {
+                      params: { id: res.data.data.id },
+                    })
+                    .then((answer) =>
+                      this.setState({
+                        data: res.data.data,
+                        loading: false,
+                        answer: answer.data.answer,
+                      })
+                    );
+                }
+                this.setState({ data: res.data.data, loading: false });
               });
           },
           res.data.status === "Already add!" ? 0 : 1000
@@ -95,18 +109,9 @@ export default class Page extends Component<KimiaProps, Easyfis> {
 
     // validasi pilihan
     if (this.state.pilih) {
-      let hasil = "";
-      if (this.state.data.answer === this.state.pilih) {
-        this.setState({ pilih: "" });
-        hasil = "true";
-      } else {
-        this.setState({ pilih: "" });
-        hasil = "false";
-      }
-
       const data = {
         id: id_soal,
-        result: hasil,
+        answer: this.state.pilih,
         id_user: selected && selected.id,
       };
       privateApi()
@@ -257,9 +262,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
               </Message>
               <Message warning>
                 <Message.Header>Jawaban yang benar adalah:</Message.Header>
-                <p>
-                  <MathWrapper text={data.answer} />
-                </p>
+                <p>{/* <MathWrapper text={data.answer} /> */}</p>
               </Message>
             </Fragment>
           ) : (

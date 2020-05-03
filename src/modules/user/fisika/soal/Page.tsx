@@ -22,6 +22,7 @@ interface Easyfis {
   isModalOpen: boolean;
   score: number;
   loading: boolean;
+  answer: string | null;
 }
 
 const Box = styled("div")`
@@ -47,13 +48,13 @@ export default class Page extends Component<FisikaProps, Easyfis> {
         opt2: "",
         opt3: "",
         opt4: "",
-        answer: "",
         image: "",
         level: "",
         matpel: "",
         id_soaluser: 0,
         result: null,
       },
+      answer: "",
       loading: false,
       pilih: "",
       selected: parseInt(this.props.match.params.id),
@@ -83,6 +84,19 @@ export default class Page extends Component<FisikaProps, Easyfis> {
                 },
               })
               .then((res) => {
+                if (res.data.data.result) {
+                  privateApi()
+                    .get(`/quiz/answer/`, {
+                      params: { id: res.data.data.id },
+                    })
+                    .then((answer) =>
+                      this.setState({
+                        data: res.data.data,
+                        loading: false,
+                        answer: answer.data.answer,
+                      })
+                    );
+                }
                 this.setState({ data: res.data.data, loading: false });
               });
           },
@@ -91,23 +105,15 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       );
   }
 
-  submit = (id_soal: number) => {
+  submit = () => {
     const { selected, history, match } = this.props;
-
+    const soal = { ...this.state.data };
     // validasi pilihan
     if (this.state.pilih) {
-      let hasil = "";
-      if (this.state.data.answer === this.state.pilih) {
-        this.setState({ pilih: "" });
-        hasil = "true";
-      } else {
-        this.setState({ pilih: "" });
-        hasil = "false";
-      }
-
       const data = {
-        id: id_soal,
-        result: hasil,
+        id: soal.id,
+        id_soaluser: soal.id_soaluser,
+        answer: this.state.pilih,
         id_user: selected && selected.id,
       };
       privateApi()
@@ -130,7 +136,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
           });
       } else {
         const id = this.state.selected + 1;
-        this.setState({ selected: id });
+        this.setState({ selected: id, pilih: "" });
         history.push(`/user/fisika/${match.params.diff}/${id}`);
       }
     } else {
@@ -177,13 +183,34 @@ export default class Page extends Component<FisikaProps, Easyfis> {
           },
         })
         .then((res) => {
-          this.setState({ data: res.data.data, loading: false });
+          if (res.data.data.result) {
+            privateApi()
+              .get(`/quiz/answer/`, {
+                params: { id: res.data.data.id },
+              })
+              .then((answer) =>
+                this.setState({
+                  data: res.data.data,
+                  loading: false,
+                  answer: answer.data.answer,
+                })
+              );
+          }
+          this.setState({ data: res.data.data, answer: "", loading: false });
         });
     }
   }
 
   render() {
-    const { data, pilih, selected, isModalOpen, score, loading } = this.state;
+    const {
+      data,
+      pilih,
+      selected,
+      isModalOpen,
+      score,
+      loading,
+      answer,
+    } = this.state;
 
     return (
       <Dashboard
@@ -225,10 +252,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
               <div />
             )}
             {data.result === null ? (
-              <Button
-                color="green"
-                onClick={() => this.submit(data.id_soaluser)}
-              >
+              <Button color="green" onClick={() => this.submit()}>
                 {selected === 5 ? "Submit" : "Next"}
               </Button>
             ) : (
@@ -265,15 +289,15 @@ export default class Page extends Component<FisikaProps, Easyfis> {
 
           {data.result !== null ? (
             <Fragment>
-              <Message color={data.result ? "green" : "red"}>
+              <Message color={data.result === "true" ? "green" : "red"}>
                 <Message.Header>
-                  Anda {data.result ? "Benar" : "Salah"} menjawab
+                  Anda {data.result === "true" ? "Benar" : "Salah"} menjawab
                 </Message.Header>
               </Message>
               <Message warning>
                 <Message.Header>Jawaban yang benar adalah:</Message.Header>
                 <p>
-                  <MathWrapper text={data.answer} />
+                  <MathWrapper text={answer ? answer : ""} />
                 </p>
               </Message>
             </Fragment>

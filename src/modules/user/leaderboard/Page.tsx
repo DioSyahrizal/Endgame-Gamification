@@ -8,20 +8,9 @@ import FisikaLead from "./leadselect/LeadFisika";
 import KimiaLead from "./leadselect/LeadKimia";
 
 const panes = [
-  { menuItem: "All Time", render: () => <Tab panes={allPanes} /> },
+  { menuItem: "All Time", render: () => <LeadAll /> },
   { menuItem: "Fisika", render: () => <Tab panes={fisikaPanes} /> },
   { menuItem: "Kimia", render: () => <Tab panes={kimiaPanes} /> },
-];
-
-const allPanes = [
-  {
-    menuItem: "All",
-    render: () => (
-      <Tab.Pane>
-        <LeadAll />
-      </Tab.Pane>
-    ),
-  },
 ];
 
 const fisikaPanes = [

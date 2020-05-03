@@ -151,7 +151,7 @@ export default class Page extends Component<SoalProps, States> {
                 </Card.Content>
                 <Card.Content extra>
                   <Progress
-                    value={progress.easy}
+                    value={progress.easy !== null ? progress.easy : 0}
                     total={5}
                     progress="ratio"
                     success={progress.easy === 5 ? true : false}
@@ -184,7 +184,7 @@ export default class Page extends Component<SoalProps, States> {
                   </Card.Content>
                   <Card.Content extra>
                     <Progress
-                      value={progress.med}
+                      value={progress.med !== null ? progress.med : 0}
                       total={5}
                       progress="ratio"
                       success={progress.med === 5 ? true : false}
@@ -261,7 +261,7 @@ export default class Page extends Component<SoalProps, States> {
                   </Card.Content>
                   <Card.Content extra>
                     <Progress
-                      value={progress.hard}
+                      value={progress.hard !== null ? progress.hard : 0}
                       total={5}
                       progress="ratio"
                       success={progress.hard === 5 ? true : false}
