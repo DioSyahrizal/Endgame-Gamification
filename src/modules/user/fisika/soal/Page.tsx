@@ -2,9 +2,12 @@ import React, { Component, Fragment } from "react";
 import { Container, Button, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import { Modal, ModalBody } from "@kata-kit/modal";
-
 import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
+import { Fab, Action } from "react-tiny-fab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { FisikaProps } from "./Page.Container";
@@ -350,6 +353,15 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             </div>
           )}
         </Container>
+        <Fab
+          position={{ bottom: 0, right: 0 }}
+          icon={<FontAwesomeIcon icon={faPlus} />}
+        >
+          <Action text="Email" />
+          <Action text="Help">
+            <i className="fa fa-help" />
+          </Action>
+        </Fab>
       </Dashboard>
     );
   }
