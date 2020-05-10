@@ -13,6 +13,7 @@ import { capitalizeFirstLetter } from "utils/helper";
 import { Link } from "react-router-dom";
 import { SoalUserInterface } from "interfaces/soal";
 import { notification } from "antd";
+import LoadingPara from "components/LoadingPara";
 
 interface Easyfis {
   data: SoalUserInterface;
@@ -104,13 +105,14 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       );
   }
 
-  submit = (id_soal: number) => {
+  submit = () => {
     const { selected, history, match } = this.props;
-
+    const soal = { ...this.state.data };
     // validasi pilihan
     if (this.state.pilih) {
       const data = {
-        id: id_soal,
+        id: soal.id,
+        id_soaluser: soal.id_soaluser,
         answer: this.state.pilih,
         id_user: selected && selected.id,
       };
@@ -121,7 +123,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       if (this.state.selected === 5) {
         privateApi()
           .put("/quiz/correction", data)
-          .then((_res) => {
+          .then((res) => {
             privateApi()
               .post("/quiz/score", {
                 id_user: selected && selected.id,
@@ -134,7 +136,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
           });
       } else {
         const id = this.state.selected + 1;
-        this.setState({ selected: id });
+        this.setState({ selected: id, pilih: "" });
         history.push(`/user/kimia/${match.params.diff}/${id}`);
       }
     } else {
@@ -180,13 +182,34 @@ export default class Page extends Component<KimiaProps, Easyfis> {
           },
         })
         .then((res) => {
-          this.setState({ data: res.data.data, loading: false });
+          if (res.data.data.result) {
+            privateApi()
+              .get(`/quiz/answer/`, {
+                params: { id: res.data.data.id },
+              })
+              .then((answer) =>
+                this.setState({
+                  data: res.data.data,
+                  loading: false,
+                  answer: answer.data.answer,
+                })
+              );
+          }
+          this.setState({ data: res.data.data, answer: "", loading: false });
         });
     }
   }
 
   render() {
-    const { data, pilih, selected, isModalOpen, score } = this.state;
+    const {
+      data,
+      pilih,
+      selected,
+      isModalOpen,
+      score,
+      loading,
+      answer,
+    } = this.state;
 
     return (
       <Dashboard
@@ -210,30 +233,39 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             </div>
           </ModalBody>
         </Modal>
-        <div className="flex flex-row justify-between">
-          {data.result !== null && selected !== 1 ? (
-            <Button onClick={() => this.back()}>Prev</Button>
-          ) : (
-            <div />
-          )}
-          {data.result === null ? (
-            <Button onClick={() => this.submit(data.id_soaluser)}>
-              {selected === 5 ? "Submit" : "Next"}
-            </Button>
-          ) : (
-            <Button onClick={() => this.review()}>
-              {selected === 5 ? "Go to Menu" : "Next"}
-            </Button>
-          )}
-        </div>
-
         <Container textAlign="center">
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            {data.result !== null && selected !== 1 ? (
+              <Button onClick={() => this.back()}>Prev</Button>
+            ) : (
+              <div />
+            )}
+            {data.result === null ? (
+              <Button color="green" onClick={() => this.submit()}>
+                {selected === 5 ? "Submit" : "Next"}
+              </Button>
+            ) : (
+              <Button color="green" onClick={() => this.review()}>
+                {selected === 5 ? "Go to Menu" : "Next"}
+              </Button>
+            )}
+          </div>
           <Box>
             <h2 style={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-              <MathWrapper text={data ? data.question : ""} />
+              {loading ? (
+                <LoadingPara />
+              ) : (
+                <MathWrapper text={data ? data.question : ""} />
+              )}
             </h2>
 
             {data.image && (
@@ -255,14 +287,16 @@ export default class Page extends Component<KimiaProps, Easyfis> {
 
           {data.result !== null ? (
             <Fragment>
-              <Message color={data.result ? "green" : "red"}>
+              <Message color={data.result === "true" ? "green" : "red"}>
                 <Message.Header>
-                  Anda {data.result ? "Benar" : "Salah"} menjawab
+                  Anda {data.result === "true" ? "Benar" : "Salah"} menjawab
                 </Message.Header>
               </Message>
               <Message warning>
                 <Message.Header>Jawaban yang benar adalah:</Message.Header>
-                <p>{/* <MathWrapper text={data.answer} /> */}</p>
+                <p>
+                  <MathWrapper text={answer ? answer : ""} />
+                </p>
               </Message>
             </Fragment>
           ) : (
