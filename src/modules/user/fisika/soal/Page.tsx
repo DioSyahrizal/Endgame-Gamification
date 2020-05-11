@@ -7,6 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
+import { Fab, Action } from "react-tiny-fab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { FisikaProps } from "./Page.Container";
