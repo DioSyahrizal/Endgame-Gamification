@@ -9,6 +9,7 @@ import LoadingCircle from "./components/LoadingCircle";
 
 import "./styles/output.css";
 import "antd/dist/antd.css";
+import "react-tiny-fab/dist/styles.css";
 import { notification } from "antd";
 import AuthChecker from "modules/auth/AuthChecker";
 
