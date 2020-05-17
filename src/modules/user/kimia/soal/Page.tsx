@@ -5,6 +5,10 @@ import { Modal, ModalBody } from "@kata-kit/modal";
 
 import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
+import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { Fab, Action } from "react-tiny-fab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { KimiaProps } from "./Page.Container";
@@ -22,7 +26,9 @@ interface Easyfis {
   isModalOpen: boolean;
   score: number;
   loading: boolean;
-  answer: string;
+  answer: string | null;
+  kunci: boolean;
+  quantity: number;
 }
 
 const Box = styled("div")`
@@ -60,6 +66,8 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       selected: parseInt(this.props.match.params.id),
       isModalOpen: false,
       score: 0,
+      kunci: false,
+      quantity: 0,
     };
   }
 
@@ -98,6 +106,11 @@ export default class Page extends Component<KimiaProps, Easyfis> {
                     );
                 }
                 this.setState({ data: res.data.data, loading: false });
+                privateApi()
+                  .get(`/item/kunci/${selected && selected.id}`)
+                  .then((res) => {
+                    this.setState({ quantity: res.data.quantity });
+                  });
               });
           },
           res.data.status === "Already add!" ? 0 : 1000
@@ -168,10 +181,48 @@ export default class Page extends Component<KimiaProps, Easyfis> {
     history.push(`/user/kimia/${match.params.diff}/${id}`);
   };
 
-  componentDidUpdate(_prevProps: any, prevState: { selected: number }) {
+  buyItem = () => {
+    const { selected } = this.props;
+    privateApi()
+      .put("/item/buykunci", { id_user: selected && selected.id })
+      .then((res) =>
+        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }))
+      )
+      .catch((error) => {
+        notification["error"]({
+          message: "Error!",
+          description: error.response.data.status,
+          placement: "topLeft",
+        });
+      });
+  };
+
+  useItem = () => {
+    const { selected } = this.props;
+    privateApi()
+      .put("/item/use", { id_user: selected && selected.id })
+      .then((_res) => {
+        privateApi()
+          .get(`/quiz/answer/`, {
+            params: { id: this.state.data.id },
+          })
+          .then((res) =>
+            this.setState((prevState) => ({
+              quantity: prevState.quantity - 1,
+              kunci: true,
+              answer: res.data.answer,
+            }))
+          );
+      });
+  };
+
+  componentDidUpdate(prevProps: KimiaProps, prevState: { selected: number }) {
     const { selected } = this.state;
     const { match } = this.props;
-    if (prevState.selected !== selected) {
+    if (
+      prevState.selected !== selected ||
+      prevProps.match.params.id !== match.params.id
+    ) {
       this.setState({ loading: true });
       privateApi()
         .get(`/quiz/soal/${match.params.id - 1}`, {
@@ -192,10 +243,18 @@ export default class Page extends Component<KimiaProps, Easyfis> {
                   data: res.data.data,
                   loading: false,
                   answer: answer.data.answer,
+                  kunci: false,
+                  selected: parseInt(match.params.id),
                 })
               );
           }
-          this.setState({ data: res.data.data, answer: "", loading: false });
+          this.setState({
+            data: res.data.data,
+            answer: "",
+            loading: false,
+            kunci: false,
+            selected: parseInt(match.params.id),
+          });
         });
     }
   }
@@ -209,6 +268,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       score,
       loading,
       answer,
+      kunci,
     } = this.state;
 
     return (
@@ -244,7 +304,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
               justifyContent: "space-between",
             }}
           >
-            {data.result !== null && selected !== 1 ? (
+            {data.result !== null && this.props.match.params.id > 1 ? (
               <Button onClick={() => this.back()}>Prev</Button>
             ) : (
               <div />
@@ -300,54 +360,78 @@ export default class Page extends Component<KimiaProps, Easyfis> {
               </Message>
             </Fragment>
           ) : (
-            <div className="flex lg:flex-row flex-col justify-center items-center">
-              <div className="flex flex-col lg:w-6/12 w-full h-full justify-between">
-                <div className="m-4">
-                  <Button
-                    size="large"
-                    fluid
-                    color="red"
-                    onClick={() => this.setState({ pilih: data.opt1 })}
-                  >
-                    <MathWrapper text={`A. ${data.opt1}`} />
-                  </Button>
+            <>
+              {kunci && (
+                <Message warning>
+                  <Message.Header>Kunci Jawaban:</Message.Header>
+                  <p>
+                    <MathWrapper text={answer ? answer : ""} />
+                  </p>
+                </Message>
+              )}
+
+              <div className="flex lg:flex-row flex-col justify-center items-center">
+                <div className="flex flex-col lg:w-6/12 w-full h-full justify-between">
+                  <div className="m-4">
+                    <Button
+                      size="large"
+                      fluid
+                      color="red"
+                      onClick={() => this.setState({ pilih: data.opt1 })}
+                    >
+                      <MathWrapper text={`A. ${data.opt1}`} />
+                    </Button>
+                  </div>
+                  <div className="m-4">
+                    <Button
+                      size="large"
+                      fluid
+                      color="yellow"
+                      onClick={() => this.setState({ pilih: data.opt2 })}
+                    >
+                      <MathWrapper text={`B. ${data.opt2}`} />
+                    </Button>
+                  </div>
                 </div>
-                <div className="m-4">
-                  <Button
-                    size="large"
-                    fluid
-                    color="yellow"
-                    onClick={() => this.setState({ pilih: data.opt2 })}
-                  >
-                    <MathWrapper text={`B. ${data.opt2}`} />
-                  </Button>
+                <div className="flex flex-col lg:w-6/12 w-full h-full ">
+                  <div className="m-4">
+                    <Button
+                      size="large"
+                      fluid
+                      color="green"
+                      onClick={() => this.setState({ pilih: data.opt3 })}
+                    >
+                      <MathWrapper text={`C. ${data.opt3}`} />
+                    </Button>
+                  </div>
+                  <div className="m-4">
+                    <Button
+                      size="large"
+                      fluid
+                      color="blue"
+                      onClick={() => this.setState({ pilih: data.opt4 })}
+                    >
+                      <MathWrapper text={`D. ${data.opt4}`} />
+                    </Button>
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col lg:w-6/12 w-full h-full ">
-                <div className="m-4">
-                  <Button
-                    size="large"
-                    fluid
-                    color="green"
-                    onClick={() => this.setState({ pilih: data.opt3 })}
-                  >
-                    <MathWrapper text={`C. ${data.opt3}`} />
-                  </Button>
-                </div>
-                <div className="m-4">
-                  <Button
-                    size="large"
-                    fluid
-                    color="blue"
-                    onClick={() => this.setState({ pilih: data.opt4 })}
-                  >
-                    <MathWrapper text={`D. ${data.opt4}`} />
-                  </Button>
-                </div>
-              </div>
-            </div>
+            </>
           )}
         </Container>
+        {data.result === null && (
+          <Fab
+            position={{ bottom: 0, right: 0 }}
+            icon={<FontAwesomeIcon icon={faKey} />}
+          >
+            <Action text="Use Kunci" onClick={() => this.useItem()}>
+              <span>{this.state.quantity}</span>
+            </Action>
+            <Action text="Beli Kunci" onClick={() => this.buyItem()}>
+              <FontAwesomeIcon icon={faShoppingCart} />
+            </Action>
+          </Fab>
+        )}
       </Dashboard>
     );
   }

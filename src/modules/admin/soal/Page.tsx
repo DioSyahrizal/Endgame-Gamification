@@ -375,6 +375,7 @@ const Page: FC = () => {
                   options={[
                     { key: "fisika", text: "Fisika", value: "fisika" },
                     { key: "kimia", text: "Kimia", value: "kimia" },
+                    { key: "quest", text: "Quest", value: "quest" },
                   ]}
                 />
 
