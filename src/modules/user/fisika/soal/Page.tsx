@@ -2,14 +2,12 @@ import React, { Component, Fragment } from "react";
 import { Container, Button, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import { Modal, ModalBody } from "@kata-kit/modal";
-import { Fab, Action } from "react-tiny-fab";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
 import { variables } from "@kata-kit/theme";
 import { Dashboard } from "@kata-kit/dashboard";
+import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { Fab, Action } from "react-tiny-fab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
@@ -218,11 +216,13 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       });
   };
 
-  componentDidUpdate(_prevProps: any, prevState: { selected: number }) {
+  componentDidUpdate(prevProps: FisikaProps, prevState: { selected: number }) {
     const { selected } = this.state;
     const { match } = this.props;
-
-    if (prevState.selected !== selected) {
+    if (
+      prevState.selected !== selected ||
+      prevProps.match.params.id !== match.params.id
+    ) {
       this.setState({ loading: true });
       privateApi()
         .get(`/quiz/soal/${match.params.id - 1}`, {
@@ -244,6 +244,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
                   loading: false,
                   answer: answer.data.answer,
                   kunci: false,
+                  selected: parseInt(match.params.id),
                 })
               );
           }
@@ -252,6 +253,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             answer: "",
             loading: false,
             kunci: false,
+            selected: parseInt(match.params.id),
           });
         });
     }
@@ -303,7 +305,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
               justifyContent: "space-between",
             }}
           >
-            {data.result !== null && selected !== 1 ? (
+            {data.result !== null && this.props.match.params.id > 1 ? (
               <Button onClick={() => this.back()}>Prev</Button>
             ) : (
               <div />
@@ -418,17 +420,19 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             </>
           )}
         </Container>
-        <Fab
-          position={{ bottom: 0, right: 0 }}
-          icon={<FontAwesomeIcon icon={faKey} />}
-        >
-          <Action text="Use Kunci" onClick={() => this.useItem()}>
-            <span>{this.state.quantity}</span>
-          </Action>
-          <Action text="Beli Kunci" onClick={() => this.buyItem()}>
-            <FontAwesomeIcon icon={faShoppingCart} />
-          </Action>
-        </Fab>
+        {data.result === null && (
+          <Fab
+            position={{ bottom: 0, right: 0 }}
+            icon={<FontAwesomeIcon icon={faKey} />}
+          >
+            <Action text="Use Kunci" onClick={() => this.useItem()}>
+              <span>{this.state.quantity}</span>
+            </Action>
+            <Action text="Beli Kunci" onClick={() => this.buyItem()}>
+              <FontAwesomeIcon icon={faShoppingCart} />
+            </Action>
+          </Fab>
+        )}
       </Dashboard>
     );
   }
