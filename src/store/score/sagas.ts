@@ -1,5 +1,5 @@
 import { put, all, takeLatest, fork, call, select } from "redux-saga/effects";
-import { fetchScoreSuccess } from "./actions";
+import { fetchScoreSuccess, fetchBuyItemSuccess } from "./actions";
 import { ScoreActionTypes } from "./types";
 import { callApi } from "utils/api/callApi";
 import { RootStore } from "interfaces/stores";
@@ -21,10 +21,18 @@ function* handleFetchScore() {
   }
 }
 
+function* handleBuyAction() {
+  yield put(fetchBuyItemSuccess());
+}
+
 function* watchFetchRequest() {
   yield takeLatest(ScoreActionTypes.FETCH_SCORE_REQUEST, handleFetchScore);
 }
 
+function* watchBuyAction() {
+  yield takeLatest(ScoreActionTypes.FETCH_BUYITEM_REQUEST, handleBuyAction);
+}
+
 export default function* scoreSaga() {
-  yield all([fork(watchFetchRequest)]);
+  yield all([fork(watchFetchRequest), fork(watchBuyAction)]);
 }

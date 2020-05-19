@@ -2,10 +2,14 @@ import React, { Component, Fragment } from "react";
 import { Container, Button, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import { Modal, ModalBody } from "@kata-kit/modal";
-
+import { AppRoot, Topbar } from "@kata-kit/layout";
 import { variables } from "@kata-kit/theme";
-import { Dashboard } from "@kata-kit/dashboard";
-import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faKey,
+  faShoppingCart,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { Fab, Action } from "react-tiny-fab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -185,9 +189,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
     const { selected } = this.props;
     privateApi()
       .put("/item/buykunci", { id_user: selected && selected.id })
-      .then((res) =>
-        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }))
-      )
+      .then((_res) => {
+        this.props.buyAction();
+        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }));
+      })
       .catch((error) => {
         notification["error"]({
           message: "Error!",
@@ -272,13 +277,20 @@ export default class Page extends Component<FisikaProps, Easyfis> {
     } = this.state;
 
     return (
-      <Dashboard
-        floatingElements={
-          <Fragment>
+      <AppRoot>
+        <Topbar
+          leftContent={
+            <Button basic>
+              <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
+              Back
+            </Button>
+          }
+        >
+          <div className="flex flex-row justify-around items-center">
             <HeaderContainer color="black" />
-          </Fragment>
-        }
-      >
+          </div>
+        </Topbar>
+
         <Modal
           show={isModalOpen}
           onClose={() => this.setState({ isModalOpen: false })}
@@ -425,7 +437,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             position={{ bottom: 0, right: 0 }}
             icon={<FontAwesomeIcon icon={faKey} />}
           >
-            <Action text="Use Kunci" onClick={() => this.useItem()}>
+            <Action
+              text="Use Kunci"
+              onClick={!kunci ? () => this.useItem() : () => null}
+            >
               <span>{this.state.quantity}</span>
             </Action>
             <Action text="Beli Kunci" onClick={() => this.buyItem()}>
@@ -433,7 +448,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             </Action>
           </Fab>
         )}
-      </Dashboard>
+      </AppRoot>
     );
   }
 }

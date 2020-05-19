@@ -9,3 +9,9 @@ export const fetchScoreError = (message: string) =>
 
 export const fetchScoreSuccess = (score: any) =>
   action(ScoreActionTypes.FETCH_SCORE_SUCCESS, score);
+
+export const fetchBuyItem = () =>
+  action(ScoreActionTypes.FETCH_BUYITEM_REQUEST);
+
+export const fetchBuyItemSuccess = () =>
+  action(ScoreActionTypes.FETCH_BUYITEM_SUCCESS);

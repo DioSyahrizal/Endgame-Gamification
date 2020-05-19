@@ -5,7 +5,7 @@ import { ScoreActionTypes } from "./types";
 const initialState: ScoreState = {
   errors: null,
   loading: false,
-  data: 110,
+  data: 0,
 };
 
 const errors: Reducer<ScoreState["errors"]> = (
@@ -47,6 +47,9 @@ const data: Reducer<ScoreState["data"]> = (
   switch (type) {
     case ScoreActionTypes.FETCH_SCORE_SUCCESS: {
       return payload;
+    }
+    case ScoreActionTypes.FETCH_BUYITEM_SUCCESS: {
+      return state - 450;
     }
     default: {
       return state;

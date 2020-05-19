@@ -14,6 +14,7 @@ import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { SoalProps } from "./Page.Container";
 import { notification } from "antd";
+
 // import Logo from "../../assets/image/saturn.png";
 
 interface States {
@@ -105,7 +106,10 @@ export default class Page extends Component<SoalProps, States> {
           className="flex flex-row justify-between items-center content-center py-6 px-12"
           style={{ backgroundColor: "#d64141" }}
         >
-          <h2 style={{ margin: 0, color: "white" }}>Fisika</h2>
+          <h2 style={{ margin: 0, color: "white", marginRight: "10px" }}>
+            Fisika
+          </h2>
+
           <HeaderContainer color="black" />
         </div>
         <Container style={{ marginTop: 20 }}>

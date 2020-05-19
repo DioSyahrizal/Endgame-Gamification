@@ -7,12 +7,15 @@ import { RouteComponentProps } from "react-router";
 import { getAuthSelected } from "store/auth/selectors";
 import { User } from "interfaces/user";
 import Page from "./Page";
+import { fetchBuyItem } from "store/score/actions";
 
 interface PropsFromState {
   selected: User | null;
 }
 
-interface PropsFromDispatch {}
+interface PropsFromDispatch {
+  buyAction: () => ReturnType<typeof fetchBuyItem>;
+}
 
 export interface FisikaProps
   extends PropsFromState,
@@ -29,8 +32,8 @@ const mapStateToProps = ({ auth }: RootStore): PropsFromState => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => {
-  return {};
-};
+const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => ({
+  buyAction: () => dispatch(fetchBuyItem()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageContainer);
