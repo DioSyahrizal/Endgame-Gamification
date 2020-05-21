@@ -31,17 +31,6 @@ export default class Login extends Component<Props> {
     this.props.loginAction(values.email, values.password);
   };
 
-  inputChange = (name: string) => {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { target } = event;
-      const value = target.type === "checkbox" ? target.checked : target.value;
-      const newState: any = {};
-
-      newState[name] = value;
-      this.setState(newState);
-    };
-  };
-
   render() {
     const { isLoggedIn, isLoading } = this.props;
     const from = this.props.location.state || "/";
@@ -85,7 +74,7 @@ export default class Login extends Component<Props> {
                       value={values.email}
                       error={errors.email ? { content: errors.email } : null}
                       fluid
-                      icon="user"
+                      icon="mail"
                       iconPosition="left"
                       placeholder="email"
                     />

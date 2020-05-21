@@ -8,9 +8,11 @@ import {
   Message,
 } from "semantic-ui-react";
 import { RouteComponentProps } from "react-router";
+import * as yup from "yup";
 
 import Background from "assets/image/login.jpeg";
 import { callApiWithoutToken } from "utils/api/callApi";
+import { Formik } from "formik";
 
 interface Props extends RouteComponentProps {}
 
@@ -22,29 +24,25 @@ interface States {
   address: string;
 }
 
+const initialValues = {
+  email: "",
+  username: "",
+  password: "",
+  address: "",
+  name: "",
+};
+
+const validationSchema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is empty!"),
+  username: yup.string().required("Username is empty!"),
+  password: yup.string().required("Password is empty!"),
+  address: yup.string().required("Address is empty"),
+  name: yup.string().required("Name is required"),
+});
+
 export default class Register extends Component<Props, States> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      username: "",
-      name: "",
-      email: "",
-      password: "",
-      address: "",
-    };
-  }
-
-  register = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = {
-      email: this.state.email,
-      username: this.state.username,
-      password: this.state.password,
-      address: this.state.address,
-      name: this.state.name,
-    };
-    callApiWithoutToken("post", "/register", data).then((res) => {
+  register = (values: any) => {
+    callApiWithoutToken("post", "/register", values).then((res) => {
       if (res.success) {
         this.props.history.push("/login");
       } else {
@@ -75,56 +73,111 @@ export default class Register extends Component<Props, States> {
           <Header as="h2" color="teal" textAlign="center">
             {/* <Image src='/logo.png' /> Log-in to your account */}
           </Header>
-          <Form onSubmit={this.register} size="large">
-            <Segment raised>
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Nama Lengkap"
-                onChange={this.inputChange("name")}
-              />
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Username"
-                onChange={this.inputChange("username")}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                type="password"
-                onChange={this.inputChange("password")}
-              />
-              <Form.Input
-                fluid
-                icon="address card"
-                iconPosition="left"
-                placeholder="Alamat Rumah"
-                type="textarea"
-                onChange={this.inputChange("address")}
-              />
-              <Form.Input
-                fluid
-                icon="envelope"
-                iconPosition="left"
-                placeholder="Email"
-                onChange={this.inputChange("email")}
-              />
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={this.register}
+          >
+            {({ handleSubmit, values, errors, handleChange }) => {
+              return (
+                <Form layout="horizontal" onSubmit={handleSubmit}>
+                  <Segment raised style={{ textAlign: "left" }}>
+                    <Form.Input
+                      name="email"
+                      type="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      error={
+                        errors.email
+                          ? { content: errors.email, pointing: "top" }
+                          : null
+                      }
+                      icon="mail"
+                      iconPosition="left"
+                      placeholder="email"
+                      label="Email"
+                    />
 
-              <Button
-                color="green"
-                content="Register"
-                fluid
-                size="large"
-                icon="right arrow"
-                labelPosition="right"
-              />
-            </Segment>
-          </Form>
+                    <Form.Input
+                      name="username"
+                      onChange={handleChange}
+                      value={values.username}
+                      error={
+                        errors.username
+                          ? { content: errors.username, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="username"
+                      label="Username"
+                    />
+
+                    <Form.Input
+                      name="password"
+                      type="password"
+                      onChange={handleChange}
+                      value={values.password}
+                      error={
+                        errors.password
+                          ? { content: errors.password, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="password"
+                      label="password"
+                    />
+
+                    <Form.Input
+                      name="name"
+                      onChange={handleChange}
+                      value={values.name}
+                      error={
+                        errors.name
+                          ? { content: errors.name, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="name"
+                      label="Name"
+                    />
+
+                    <Form.Input
+                      name="address"
+                      type="address"
+                      onChange={handleChange}
+                      value={values.address}
+                      error={
+                        errors.address
+                          ? { content: errors.address, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="address"
+                      label="Address"
+                    />
+
+                    <Button
+                      type="submit"
+                      color="green"
+                      icon="right arrow"
+                      fluid
+                      labelPosition="right"
+                      content="Register"
+                    />
+                  </Segment>
+                </Form>
+              );
+            }}
+          </Formik>
+
           <Message>
             Have a account? <a href="/login">Login</a>
           </Message>

@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { SoalUserInterface } from "interfaces/soal";
 import { notification } from "antd";
 import LoadingPara from "components/LoadingPara";
+import LoadingCircle from "components/LoadingCircle";
 
 interface Easyfis {
   data: SoalUserInterface;
@@ -33,6 +34,7 @@ interface Easyfis {
   answer: string | null;
   kunci: boolean;
   quantity: number;
+  loadKey: boolean;
 }
 
 const Box = styled("div")`
@@ -72,6 +74,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       score: 0,
       kunci: false,
       quantity: 0,
+      loadKey: false,
     };
   }
 
@@ -204,6 +207,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
 
   useItem = () => {
     const { selected } = this.props;
+    this.setState({ loadKey: true });
     privateApi()
       .put("/item/use", { id_user: selected && selected.id })
       .then((_res) => {
@@ -215,6 +219,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             this.setState((prevState) => ({
               quantity: prevState.quantity - 1,
               kunci: true,
+              loadKey: false,
               answer: res.data.answer,
             }))
           );
@@ -274,6 +279,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       loading,
       answer,
       kunci,
+      loadKey,
     } = this.state;
 
     return (
@@ -306,7 +312,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
           </ModalBody>
         </Modal>
 
-        <Container textAlign="center">
+        <Container textAlign="center" className="mt-12">
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
@@ -374,14 +380,18 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             </Fragment>
           ) : (
             <>
-              {kunci && (
-                <Message warning>
-                  <Message.Header>Kunci Jawaban:</Message.Header>
-                  <p>
-                    <MathWrapper text={answer ? answer : ""} />
-                  </p>
-                </Message>
-              )}
+              {kunci ? (
+                loadKey ? (
+                  <LoadingCircle />
+                ) : (
+                  <Message warning>
+                    <Message.Header>Kunci Jawaban:</Message.Header>
+                    <p>
+                      <MathWrapper text={answer ? answer : ""} />
+                    </p>
+                  </Message>
+                )
+              ) : null}
 
               <div className="flex lg:flex-row flex-col justify-center items-center">
                 <div className="flex flex-col lg:w-6/12 w-full h-full justify-between">
