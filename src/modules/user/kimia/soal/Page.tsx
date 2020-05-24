@@ -2,10 +2,14 @@ import React, { Component, Fragment } from "react";
 import { Container, Button, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import { Modal, ModalBody } from "@kata-kit/modal";
-
+import { AppRoot, Topbar } from "@kata-kit/layout";
 import { variables } from "@kata-kit/theme";
-import { Dashboard } from "@kata-kit/dashboard";
-import { faKey, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faKey,
+  faShoppingCart,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { Fab, Action } from "react-tiny-fab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -18,6 +22,7 @@ import { Link } from "react-router-dom";
 import { SoalUserInterface } from "interfaces/soal";
 import { notification } from "antd";
 import LoadingPara from "components/LoadingPara";
+import LoadingCircle from "components/LoadingCircle";
 
 interface Easyfis {
   data: SoalUserInterface;
@@ -29,6 +34,7 @@ interface Easyfis {
   answer: string | null;
   kunci: boolean;
   quantity: number;
+  loadKey: boolean;
 }
 
 const Box = styled("div")`
@@ -68,6 +74,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       score: 0,
       kunci: false,
       quantity: 0,
+      loadKey: false,
     };
   }
 
@@ -185,9 +192,10 @@ export default class Page extends Component<KimiaProps, Easyfis> {
     const { selected } = this.props;
     privateApi()
       .put("/item/buykunci", { id_user: selected && selected.id })
-      .then((res) =>
-        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }))
-      )
+      .then((_res) => {
+        this.props.buyAction();
+        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }));
+      })
       .catch((error) => {
         notification["error"]({
           message: "Error!",
@@ -199,6 +207,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
 
   useItem = () => {
     const { selected } = this.props;
+    this.setState({ loadKey: true });
     privateApi()
       .put("/item/use", { id_user: selected && selected.id })
       .then((_res) => {
@@ -210,6 +219,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             this.setState((prevState) => ({
               quantity: prevState.quantity - 1,
               kunci: true,
+              loadKey: false,
               answer: res.data.answer,
             }))
           );
@@ -269,19 +279,27 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       loading,
       answer,
       kunci,
+      loadKey,
     } = this.state;
 
     return (
-      <Dashboard
-        floatingElements={
-          <Fragment>
+      <AppRoot>
+        <Topbar
+          leftContent={
+            <Button basic onClick={() => this.props.goBack()}>
+              <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
+              Back
+            </Button>
+          }
+        >
+          <div className="flex flex-row justify-around items-center">
             <HeaderContainer color="black" />
-          </Fragment>
-        }
-      >
+          </div>
+        </Topbar>
+
         <Modal
           show={isModalOpen}
-          onClose={() => this.setState({ isModalOpen: true })}
+          onClose={() => this.setState({ isModalOpen: false })}
         >
           <ModalBody>
             <div className="m-6 text-center">
@@ -293,7 +311,8 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             </div>
           </ModalBody>
         </Modal>
-        <Container textAlign="center">
+
+        <Container textAlign="center" className="mt-12">
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
@@ -361,14 +380,18 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             </Fragment>
           ) : (
             <>
-              {kunci && (
-                <Message warning>
-                  <Message.Header>Kunci Jawaban:</Message.Header>
-                  <p>
-                    <MathWrapper text={answer ? answer : ""} />
-                  </p>
-                </Message>
-              )}
+              {kunci ? (
+                loadKey ? (
+                  <LoadingCircle />
+                ) : (
+                  <Message warning>
+                    <Message.Header>Kunci Jawaban:</Message.Header>
+                    <p>
+                      <MathWrapper text={answer ? answer : ""} />
+                    </p>
+                  </Message>
+                )
+              ) : null}
 
               <div className="flex lg:flex-row flex-col justify-center items-center">
                 <div className="flex flex-col lg:w-6/12 w-full h-full justify-between">
@@ -424,7 +447,10 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             position={{ bottom: 0, right: 0 }}
             icon={<FontAwesomeIcon icon={faKey} />}
           >
-            <Action text="Use Kunci" onClick={() => this.useItem()}>
+            <Action
+              text="Use Kunci"
+              onClick={!kunci ? () => this.useItem() : () => null}
+            >
               <span>{this.state.quantity}</span>
             </Action>
             <Action text="Beli Kunci" onClick={() => this.buyItem()}>
@@ -432,7 +458,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             </Action>
           </Fab>
         )}
-      </Dashboard>
+      </AppRoot>
     );
   }
 }

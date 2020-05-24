@@ -286,7 +286,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       <AppRoot>
         <Topbar
           leftContent={
-            <Button basic>
+            <Button basic onClick={() => this.props.goBack()}>
               <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
               Back
             </Button>

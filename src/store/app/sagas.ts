@@ -11,7 +11,9 @@ function* onLocationChange() {
     (state: RootStore) => state.router.location
   );
 
-  Cookies.set(CK_LAST_PATH, pathname);
+  if (!/^(\/user)(\/fisika|\/kimia)(\/easy|\/medium|\/hard)/.test(pathname)) {
+    Cookies.set(CK_LAST_PATH, pathname);
+  }
 }
 
 function* watchLocation() {
