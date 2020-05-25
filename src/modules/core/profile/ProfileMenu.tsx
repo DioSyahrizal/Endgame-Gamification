@@ -54,7 +54,7 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
                   </Menu.NavLink>
                 </Menu.DropdownItem>
                 <Menu.DropdownItem>
-                  <Menu.NavLink to={"/"}>My Badge</Menu.NavLink>
+                  <Menu.NavLink to={"/user/badge"}>My Badge</Menu.NavLink>
                 </Menu.DropdownItem>
 
                 <DropdownItem divider />
