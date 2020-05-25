@@ -29,6 +29,7 @@ interface Easyfis {
   pilih: string;
   selected: number;
   isModalOpen: boolean;
+  isModalItemOpen: boolean;
   score: number;
   loading: boolean;
   answer: string | null;
@@ -71,6 +72,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       pilih: "",
       selected: parseInt(this.props.match.params.id),
       isModalOpen: false,
+      isModalItemOpen: false,
       score: 0,
       kunci: false,
       quantity: 0,
@@ -194,7 +196,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       .put("/item/buykunci", { id_user: selected && selected.id })
       .then((_res) => {
         this.props.buyAction();
-        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }));
+        this.setState((prevState) => ({
+          quantity: prevState.quantity + 1,
+          isModalItemOpen: false,
+        }));
       })
       .catch((error) => {
         notification["error"]({
@@ -280,6 +285,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       answer,
       kunci,
       loadKey,
+      isModalItemOpen,
     } = this.state;
 
     return (
@@ -305,9 +311,31 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             <div className="m-6 text-center">
               <h2>Congratulation!</h2>
               <h4>Your Score is {score}</h4>
-              <Link to="/user/dashboard">
+              <Link to="/user/fisika">
                 <Button color="green">Go back to Menu</Button>
               </Link>
+            </div>
+          </ModalBody>
+        </Modal>
+
+        <Modal
+          show={isModalItemOpen}
+          onClose={() => this.setState({ isModalItemOpen: false })}
+        >
+          <ModalBody>
+            <div className="m-6 text-center">
+              <h2>Buy Kunci Jawaban?</h2>
+              <h4>This cost 450</h4>
+
+              <Button color="green" onClick={() => this.buyItem()}>
+                Yes
+              </Button>
+              <Button
+                color="red"
+                onClick={() => this.setState({ isModalItemOpen: false })}
+              >
+                No
+              </Button>
             </div>
           </ModalBody>
         </Modal>
@@ -453,7 +481,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
             >
               <span>{this.state.quantity}</span>
             </Action>
-            <Action text="Beli Kunci" onClick={() => this.buyItem()}>
+            <Action
+              text="Beli Kunci"
+              onClick={() => this.setState({ isModalItemOpen: true })}
+            >
               <FontAwesomeIcon icon={faShoppingCart} />
             </Action>
           </Fab>

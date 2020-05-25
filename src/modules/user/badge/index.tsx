@@ -1,3 +1,3 @@
-import Page from "./Page";
+import PageContainer from "./Page.Container";
 
-export default Page;
+export default PageContainer;
