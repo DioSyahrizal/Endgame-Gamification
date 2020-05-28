@@ -49,6 +49,9 @@ class ProfileMenu extends Component<ProfileMenuProps, ProfileMenuStates> {
               <Menu.DropdownToggle isOpen={isOpen} toggle={this.handleToggle} />
               <Menu.DropdownMenu isOpen={isOpen}>
                 <Menu.DropdownItem>
+                  <Menu.NavLink to={`/user/dashboard`}>Dashboard</Menu.NavLink>
+                </Menu.DropdownItem>
+                <Menu.DropdownItem>
                   <Menu.NavLink to={`/user/leaderboard`}>
                     Leaderboard
                   </Menu.NavLink>

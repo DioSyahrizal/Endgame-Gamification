@@ -66,7 +66,7 @@ export default class Page extends Component<BadgeProps, State> {
             {userBadge.length !== 0
               ? userBadge.map((badge) => (
                   <Wrapper key={badge.id}>
-                    <Tooltip placement="left" title={badge.desription}>
+                    <Tooltip placement="top" title={badge.description}>
                       <img
                         src={require(`assets/icon/badge/${badge.id}.png`)}
                         alt={badge.name_badge}
@@ -82,7 +82,7 @@ export default class Page extends Component<BadgeProps, State> {
           <div className="flex flex-row justify-between items-center flex-wrap">
             {allBadge.map((badge) => (
               <Wrapper key={badge.id}>
-                <Tooltip placement="left" title={badge.desription}>
+                <Tooltip placement="top" title={badge.description}>
                   <img
                     src={require(`assets/icon/badge/${badge.id}.png`)}
                     alt={badge.name_badge}
