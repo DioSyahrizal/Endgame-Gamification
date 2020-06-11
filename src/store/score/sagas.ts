@@ -15,7 +15,7 @@ function* handleFetchScore() {
       "get",
       `/score?id_user=${selectedClient.id}`
     );
-    yield put(fetchScoreSuccess(res.point));
+    yield put(fetchScoreSuccess(res));
   } catch (error) {
     yield console.dir("error");
   }

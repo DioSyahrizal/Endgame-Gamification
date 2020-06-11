@@ -5,7 +5,7 @@ import { ScoreActionTypes } from "./types";
 const initialState: ScoreState = {
   errors: null,
   loading: false,
-  data: 0,
+  data: { point: 0, coin: 0 },
 };
 
 const errors: Reducer<ScoreState["errors"]> = (
@@ -49,7 +49,7 @@ const data: Reducer<ScoreState["data"]> = (
       return payload;
     }
     case ScoreActionTypes.FETCH_BUYITEM_SUCCESS: {
-      return state - 450;
+      return state.point - 450;
     }
     default: {
       return state;
