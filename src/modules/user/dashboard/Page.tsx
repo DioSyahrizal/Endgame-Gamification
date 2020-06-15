@@ -122,7 +122,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
               </Board>
             </div>
             <Board
-              to="/quest"
+              to="/user/quest/1"
               style={{ color: "white", background: "#39479d" }}
               className="flex flex-col w-full h-full bg-gray-500 mr-4 py-4 rounded-md text-center items-center justify-center"
             >

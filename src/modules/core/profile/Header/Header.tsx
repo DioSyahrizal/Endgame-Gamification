@@ -19,48 +19,58 @@ const Wrapper = styled("div")`
 
 const Content = styled("div")``;
 
-export const Header: FC<ScoreProps> = (props) => {
+const Name = styled("div")`
+  margin-right: 15px;
+  margin-left: 10;
+  margin-bottom: 0;
+  border: 0.5px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  color: black;
+  background: white;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const Header: FC<ScoreProps> = ({
+  showPoint = true,
+  point,
+  coin,
+  selected,
+  color,
+}) => {
   return (
     <Wrapper>
-      <Content style={{ color: props.color ? props.color : "white" }}>
-        <div className="flex lg:flex-row flex-col justify-center items-center">
-          <img
-            src={require("assets/image/diamond.svg")}
-            alt="diamond-img"
-            className="mr-4"
-            style={{ width: "30px", height: "30px" }}
-          />
-          <p className="mr-2" style={{ marginBottom: 0 }}>
-            {props.coin}
-          </p>
+      <Content style={{ color: color ? color : "white" }}>
+        {showPoint ? (
+          <div className="flex flex-row justify-center items-center">
+            <img
+              src={require("assets/image/diamond.svg")}
+              alt="diamond-img"
+              className="mr-2"
+              style={{ width: "30px", height: "30px" }}
+            />
+            <p className="mr-4" style={{ marginBottom: 0 }}>
+              {coin}
+            </p>
 
-          <img
-            src={require("assets/image/coin.svg")}
-            alt="coin-img"
-            className="mr-4"
-            style={{ width: "30px", height: "30px" }}
-          />
-          <p className="mr-2" style={{ marginBottom: 0 }}>
-            {props.point}
-          </p>
-        </div>
+            <img
+              src={require("assets/image/coin.svg")}
+              alt="coin-img"
+              className="mr-2"
+              style={{ width: "30px", height: "30px" }}
+            />
+            <p className="mr-2" style={{ marginBottom: 0 }}>
+              {point}
+            </p>
+          </div>
+        ) : null}
       </Content>
-      <Content
-        style={{
-          marginRight: 10,
-          marginLeft: 10,
-          marginBottom: 0,
-          border: "0.5px solid grey",
-          borderRadius: "20px",
-          padding: "5px 10px",
-          color: "black",
-          background: "white",
-        }}
-      >
-        {props.selected && props.selected.name}
-      </Content>
+      <Name>{selected && selected.name}</Name>
       <Content>
-        <ProfileMenu selected={props.selected} />
+        <ProfileMenu selected={selected} />
       </Content>
     </Wrapper>
   );

@@ -21,6 +21,7 @@ interface PropsFromDispatch {
 
 interface ColorProps {
   color?: string;
+  showPoint?: boolean;
 }
 
 export type ScoreProps = PropsFromDispatch & PropsFromState & ColorProps;
