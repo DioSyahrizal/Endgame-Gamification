@@ -30,7 +30,7 @@ interface Props extends PropsFromDispatch, RouteComponentProps {}
 
 const ControlRoom = React.lazy(() => import("./controlroom"));
 const Soal = React.lazy(() => import("./soal"));
-const Quiz = React.lazy(() => import("./quiz"));
+const Quest = React.lazy(() => import("./quest"));
 
 const parentPath = "/admin";
 
@@ -104,7 +104,11 @@ const Page: FC<Props> = (props: Props) => {
                       component={ControlRoom}
                     />
                     <Route path={`${parentPath}/soal`} exact component={Soal} />
-                    <Route path={`${parentPath}/quiz`} exact component={Quiz} />
+                    <Route
+                      path={`${parentPath}/quest`}
+                      exact
+                      component={Quest}
+                    />
                     <Route
                       render={() => (
                         <Redirect to={`${parentPath}/controlroom`} />

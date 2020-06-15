@@ -35,15 +35,13 @@ const Page: FC = () => {
     opt3: yup.string().required("Pil 3 Kosong"),
     opt4: yup.string().required("Pil 4 Kosong"),
     answer: yup.string().required("Jawaban kosong"),
-    level: yup.string().required("Level kosong"),
-    matpel: yup.string().required("Matpel kosong"),
     profileImg: yup.mixed().label("File"),
   });
 
   const loadData = (matpel?: string) => {
     const param = matpel ? { params: { matpel: matpel } } : {};
     privateApi()
-      .get("/soal/all", param)
+      .get("/quest/all", param)
       .then((res) => {
         setData(res.data.data);
         setLoading(false);
@@ -59,7 +57,7 @@ const Page: FC = () => {
     value.profileImg = codeImage;
 
     privateApi()
-      .post("/soal/addsingle", value)
+      .post("/quest/add", value)
       .then((res) => {
         setOpen(false);
         loadData();
@@ -185,16 +183,16 @@ const Page: FC = () => {
 
   useOnMount(() => {
     const tempSideNavState = { ...sideNavState };
-    tempSideNavState["selectedKeys"] = ["quiz"];
+    tempSideNavState["selectedKeys"] = ["quest"];
     setSideNavState(tempSideNavState);
-    setBreadcrumbs(["Quiz"]);
+    setBreadcrumbs(["Quest"]);
     loadData();
   });
 
   return (
     <>
       <Drawer
-        title="Detail Quiz"
+        title="Detail quest"
         width={720}
         onClose={() => setDetailSoal(null)}
         visible={!!detailSoal}
@@ -259,8 +257,6 @@ const Page: FC = () => {
             opt3: "",
             opt4: "",
             answer: "",
-            level: "",
-            matpel: "",
             profileImg: "",
           }}
           validationSchema={validationSchema}
@@ -347,37 +343,6 @@ const Page: FC = () => {
                   ]}
                 />
 
-                <Form.Select
-                  id="key"
-                  name="level"
-                  fluid
-                  placeholder="Level"
-                  label="Level"
-                  onChange={(e, v) => setFieldValue("level", v.value)}
-                  value={values.level}
-                  error={errors.level ? { content: errors.level } : null}
-                  options={[
-                    { key: "easy", text: "Easy", value: "Easy" },
-                    { key: "medium", text: "Medium", value: "Medium" },
-                    { key: "hard", text: "Hard", value: "Hard" },
-                  ]}
-                />
-
-                <Form.Select
-                  id="key"
-                  name="matpel"
-                  fluid
-                  placeholder="matpel"
-                  label="matpel"
-                  onChange={(e, v) => setFieldValue("matpel", v.value)}
-                  value={values.matpel}
-                  error={errors.matpel ? { content: errors.matpel } : null}
-                  options={[
-                    { key: "fisika", text: "Fisika", value: "fisika" },
-                    { key: "kimia", text: "Kimia", value: "kimia" },
-                  ]}
-                />
-
                 {/* <SemanticButton
                   onClick={triggerUploadFile}
                   disabled={values.profileImg ? true : false}
@@ -415,7 +380,7 @@ const Page: FC = () => {
         </Formik>
       </Drawer>
       <div className="flex justify-between items-center">
-        <Typography.Title level={2}>Quiz</Typography.Title>
+        <Typography.Title level={2}>Quest</Typography.Title>
         <div className="flex flex-row justify-center">
           <Select
             defaultValue=""
@@ -427,7 +392,7 @@ const Page: FC = () => {
             <Option value="kimia">Kimia</Option>
           </Select>
           <Button type="primary" className="ml-4" onClick={() => setOpen(true)}>
-            Tambah Quiz
+            Tambah quest
           </Button>
         </div>
       </div>

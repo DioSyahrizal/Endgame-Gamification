@@ -4,13 +4,13 @@ import {
   Dropdown as KataDropdown,
   DropdownToggle as KataDropdownToggle,
   DropdownMenu as KataDropdownMenu,
-  DropdownItem as KataDropdownItem
+  DropdownItem as KataDropdownItem,
 } from "@kata-kit/dropdown";
 import { variables } from "@kata-kit/theme";
 
 export const Main = styled.div`
   position: relative;
-  width: 150px;
+  width: 120px;
   border-radius: 6px;
   border: solid 1px #e2e6e8;
   background-color: #ffffff;
@@ -55,7 +55,7 @@ export const Avatar = styled.img`
 export const Text = styled.span`
   display: inline-block;
   overflow: hidden;
-  text-overflow: ellipsis;
+
   margin-left: 8px;
 `;
 
@@ -89,9 +89,9 @@ export const NavLink = styled(KataNavLink)`
 export const Dropdown = styled(KataDropdown)``;
 
 export const DropdownToggle = styled(KataDropdownToggle)`
-  padding: 6px;
-  height: 32px;
-  width: 32px;
+  padding: 0px;
+  height: 20px;
+  width: 20px;
   background: #ffffff;
   margin: 2px 0 2px 14px;
   border: none;

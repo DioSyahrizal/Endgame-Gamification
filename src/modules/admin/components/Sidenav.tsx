@@ -26,9 +26,9 @@ const menu = [
     icon: "book",
   },
   {
-    key: "quiz",
-    label: "Quiz",
-    icon: "quiz",
+    key: "quest",
+    label: "Quest",
+    icon: "quest",
   },
   // {
   //   key: "announcements",

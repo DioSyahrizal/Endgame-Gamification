@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 
-import Grid from "components/Grid";
 import ProfileMenu from "../ProfileMenu";
 import { ScoreProps } from "./Header.Container";
+import styled from "styled-components";
 
 // interface HeaderProps {
 //   color: string;
@@ -10,34 +10,58 @@ import { ScoreProps } from "./Header.Container";
 
 // type HeaderPropsColors = HeaderProps & ScoreProps;
 
+const Wrapper = styled("div")`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const Content = styled("div")``;
+
 export const Header: FC<ScoreProps> = (props) => {
   return (
-    <Grid.Container verticalAlign="middle" space={22}>
-      <Grid.Column style={{ color: props.color ? props.color : "white" }}>
-        <div className="flex flex-row justify-center items-center">
-          <p className="mr-2">{props.coin}</p>
+    <Wrapper>
+      <Content style={{ color: props.color ? props.color : "white" }}>
+        <div className="flex lg:flex-row flex-col justify-center items-center">
           <img
             src={require("assets/image/diamond.svg")}
-            alt="coin-img"
+            alt="diamond-img"
             className="mr-4"
             style={{ width: "30px", height: "30px" }}
           />
+          <p className="mr-2" style={{ marginBottom: 0 }}>
+            {props.coin}
+          </p>
 
-          <p className="mr-2">{props.point}</p>
           <img
             src={require("assets/image/coin.svg")}
             alt="coin-img"
             className="mr-4"
             style={{ width: "30px", height: "30px" }}
           />
+          <p className="mr-2" style={{ marginBottom: 0 }}>
+            {props.point}
+          </p>
         </div>
-      </Grid.Column>
-      <Grid.Column style={{ color: props.color ? props.color : "white" }}>
+      </Content>
+      <Content
+        style={{
+          marginRight: 10,
+          marginLeft: 10,
+          marginBottom: 0,
+          border: "0.5px solid grey",
+          borderRadius: "20px",
+          padding: "5px 10px",
+          color: "black",
+          background: "white",
+        }}
+      >
         {props.selected && props.selected.name}
-      </Grid.Column>
-      <Grid.Column>
+      </Content>
+      <Content>
         <ProfileMenu selected={props.selected} />
-      </Grid.Column>
-    </Grid.Container>
+      </Content>
+    </Wrapper>
   );
 };
