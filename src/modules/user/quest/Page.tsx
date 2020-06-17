@@ -13,23 +13,19 @@ import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { QuestProps } from "./Page.Container";
 import MathWrapper from "components/MathWrapper";
-import { capitalizeFirstLetter } from "utils/helper";
-import { Link } from "react-router-dom";
 import { SoalUserInterface } from "interfaces/soal";
 import { notification } from "antd";
 import LoadingPara from "components/LoadingPara";
 
-interface Easyfis {
+interface QuestState {
   data: SoalUserInterface;
   pilih: string;
   selected: number;
   isModalOpen: boolean;
-  isModalItemOpen: boolean;
   score: number;
   loading: boolean;
   answer: string | null;
-  kunci: boolean;
-  quantity: number;
+  hasil: string;
 }
 
 const Box = styled("div")`
@@ -43,7 +39,7 @@ const Box = styled("div")`
   margin-bottom: 30px;
 `;
 
-export default class Page extends Component<QuestProps, Easyfis> {
+export default class Page extends Component<QuestProps, QuestState> {
   constructor(props: QuestProps) {
     super(props);
 
@@ -66,15 +62,14 @@ export default class Page extends Component<QuestProps, Easyfis> {
       pilih: "",
       selected: parseInt(this.props.match.params.id),
       isModalOpen: false,
-      isModalItemOpen: false,
       score: 0,
-      kunci: false,
-      quantity: 0,
+      hasil: "",
     };
   }
 
   componentDidMount() {
     const { selected, goBack } = this.props;
+
     privateApi()
       .get(`/quest/menu`)
       .then((res) => {
@@ -120,7 +115,7 @@ export default class Page extends Component<QuestProps, Easyfis> {
   }
 
   submit = () => {
-    const { selected, history, match } = this.props;
+    const { selected } = this.props;
     const soal = { ...this.state.data };
     // validasi pilihan
     if (this.state.pilih) {
@@ -131,28 +126,11 @@ export default class Page extends Component<QuestProps, Easyfis> {
         id_user: selected && selected.id,
       };
       privateApi()
-        .put("/quiz/correction", data)
-        .then((res) => console.dir(res));
-
-      if (this.state.selected === 5) {
-        privateApi()
-          .put("/quiz/correction", data)
-          .then((res) => {
-            privateApi()
-              .post("/quiz/score", {
-                id_user: selected && selected.id,
-                level: capitalizeFirstLetter(match.params.diff),
-                matpel: "fisika",
-              })
-              .then((data) =>
-                this.setState({ score: data.data.score, isModalOpen: true })
-              );
-          });
-      } else {
-        const id = this.state.selected + 1;
-        this.setState({ selected: id, pilih: "" });
-        history.push(`/user/fisika/${match.params.diff}/${id}`);
-      }
+        .put("/quest/correction", data)
+        .then((res) => {
+          console.dir(res);
+          this.setState({ isModalOpen: true, hasil: res.data.hasil });
+        });
     } else {
       notification["warning"]({
         message: "Pilihan Kosong",
@@ -165,21 +143,28 @@ export default class Page extends Component<QuestProps, Easyfis> {
   };
 
   review = () => {
-    const { history, match } = this.props;
+    const { history } = this.props;
     if (this.state.selected === 5) {
-      history.push("/user/fisika");
+      history.push("/user/dashboard");
     } else {
       const id = this.state.selected + 1;
       this.setState({ selected: id });
-      history.push(`/user/fisika/${match.params.diff}/${id}`);
+      history.push(`/user/quest/${id}`);
     }
   };
 
   back = () => {
-    const { history, match } = this.props;
+    const { history } = this.props;
     const id = this.state.selected - 1;
     this.setState({ selected: id });
-    history.push(`/user/fisika/${match.params.diff}/${id}`);
+    history.push(`/user/quest/${id}`);
+  };
+
+  closeModal = () => {
+    const { history } = this.props;
+    const id = this.state.selected + 1;
+    this.setState({ selected: id, pilih: "", isModalOpen: false });
+    history.push(`/user/quest/${id}`);
   };
 
   componentDidUpdate(prevProps: QuestProps, prevState: { selected: number }) {
@@ -207,7 +192,7 @@ export default class Page extends Component<QuestProps, Easyfis> {
                   data: res.data.data,
                   loading: false,
                   answer: answer.data.answer,
-                  kunci: false,
+
                   selected: parseInt(match.params.id),
                 })
               );
@@ -216,7 +201,7 @@ export default class Page extends Component<QuestProps, Easyfis> {
             data: res.data.data,
             answer: "",
             loading: false,
-            kunci: false,
+
             selected: parseInt(match.params.id),
           });
         });
@@ -229,13 +214,14 @@ export default class Page extends Component<QuestProps, Easyfis> {
       pilih,
       selected,
       isModalOpen,
-      score,
       loading,
       answer,
+      hasil,
     } = this.state;
 
     return (
       <AppRoot>
+        {console.dir(hasil)}
         <Topbar
           leftContent={
             <div className="flex flex-row items-center">
@@ -252,17 +238,15 @@ export default class Page extends Component<QuestProps, Easyfis> {
           </div>
         </Topbar>
 
-        <Modal
-          show={isModalOpen}
-          onClose={() => this.setState({ isModalOpen: false })}
-        >
+        <Modal show={isModalOpen} onClose={() => this.closeModal()}>
           <ModalBody>
             <div className="m-6 text-center">
-              <h2>Congratulation!</h2>
-              <h4>Your Score is {score}</h4>
-              <Link to="/user/fisika">
-                <Button color="green">Go back to Menu</Button>
-              </Link>
+              <h2>Kamu {hasil === "true" ? "benar" : "salah"} menjawab!</h2>
+              {hasil === "true" && <h4>Kamu mendapatkan 600 Diamond</h4>}
+
+              <Button color="green" onClick={() => this.closeModal()}>
+                Lanjut ke Quest Berikutnya
+              </Button>
             </div>
           </ModalBody>
         </Modal>
