@@ -15,7 +15,7 @@ import { privateApi } from "utils/api/callApi";
 import { SoalProps } from "./Page.Container";
 import { notification } from "antd";
 
-// import Logo from "../../assets/image/saturn.png";
+// import Logo from "../../assets/image/physic-logo.svg";
 
 interface States {
   progress: { easy: number; med: number; hard: number };
@@ -145,9 +145,10 @@ export default class Page extends Component<SoalProps, States> {
               >
                 <Image
                   className="h-auto"
-                  src={require("assets/image/saturn.png")}
+                  src={require("assets/icon/physic-logo.svg")}
                   wrapped
                   ui={false}
+                  style={{ padding: 20 }}
                 />
                 <Card.Content>
                   <Card.Header>Easy</Card.Header>
@@ -173,7 +174,7 @@ export default class Page extends Component<SoalProps, States> {
                 >
                   <Image
                     className="h-auto"
-                    src={require("assets/image/saturn.png")}
+                    src={require("assets/icon/physic-logo.svg")}
                     wrapped
                     ui={false}
                     style={{
@@ -212,7 +213,7 @@ export default class Page extends Component<SoalProps, States> {
                   ) : (
                     <Image
                       className="h-auto"
-                      src={require("assets/icon/lock.svg")}
+                      src={require("assets/icon/physic-logo.svg")}
                       wrapped
                       ui={false}
                       style={{
@@ -250,7 +251,7 @@ export default class Page extends Component<SoalProps, States> {
                 >
                   <Image
                     className="h-auto"
-                    src={require("assets/image/saturn.png")}
+                    src={require("assets/icon/physic-logo.svg")}
                     wrapped
                     ui={false}
                     style={{

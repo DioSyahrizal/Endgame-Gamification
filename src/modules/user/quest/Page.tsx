@@ -162,9 +162,14 @@ export default class Page extends Component<QuestProps, QuestState> {
 
   closeModal = () => {
     const { history } = this.props;
-    const id = this.state.selected + 1;
-    this.setState({ selected: id, pilih: "", isModalOpen: false });
-    history.push(`/user/quest/${id}`);
+    if (this.state.selected !== 5) {
+      const id = this.state.selected + 1;
+      this.setState({ selected: id, pilih: "", isModalOpen: false });
+      history.push(`/user/quest/${id}`);
+    } else {
+      this.setState({ isModalOpen: false });
+      history.push("/user/dashboard");
+    }
   };
 
   componentDidUpdate(prevProps: QuestProps, prevState: { selected: number }) {
