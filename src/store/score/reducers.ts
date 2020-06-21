@@ -5,7 +5,7 @@ import { ScoreActionTypes } from "./types";
 const initialState: ScoreState = {
   errors: null,
   loading: false,
-  data: 0,
+  data: { point: 0, coin: 0 },
 };
 
 const errors: Reducer<ScoreState["errors"]> = (
@@ -49,7 +49,33 @@ const data: Reducer<ScoreState["data"]> = (
       return payload;
     }
     case ScoreActionTypes.FETCH_BUYITEM_SUCCESS: {
-      return state - 450;
+      let newState = { ...state };
+      newState["point"] = newState.point - 450;
+      return newState;
+    }
+    case ScoreActionTypes.FETCH_BUYLEVELMED_SUCCESS: {
+      let newState: any = { ...state };
+      let cost: number;
+      if (payload === "point") {
+        cost = 1000;
+      } else {
+        cost = 300;
+      }
+      newState[payload] = newState[payload] - cost;
+      console.dir(newState);
+      return newState;
+    }
+    case ScoreActionTypes.FETCH_BUYLEVELHARD_SUCCESS: {
+      let newState: any = { ...state };
+      let cost: number;
+      if (payload === "point") {
+        cost = 2000;
+      } else {
+        cost = 600;
+      }
+      newState[payload] = newState[payload] - cost;
+      console.dir(newState);
+      return newState;
     }
     default: {
       return state;

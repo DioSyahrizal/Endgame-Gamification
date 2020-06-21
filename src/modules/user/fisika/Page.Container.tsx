@@ -6,12 +6,16 @@ import { RouteComponentProps } from "react-router";
 import { getAuthSelected } from "store/auth/selectors";
 import { User } from "interfaces/user";
 import Page from "./Page";
+import { buyLevelMedRequest, buyLevelHardRequest } from "store/score/actions";
 
 interface PropsFromState {
   selected: User | null;
 }
 
-interface PropsFromDispatch {}
+interface PropsFromDispatch {
+  buyMedium: (curr: string) => ReturnType<typeof buyLevelMedRequest>;
+  buyHard: (curr: string) => ReturnType<typeof buyLevelHardRequest>;
+}
 
 export interface SoalProps
   extends PropsFromState,
@@ -28,8 +32,9 @@ const mapStateToProps = ({ auth }: RootStore): PropsFromState => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => {
-  return {};
-};
+const mapDispatchToProps = (dispatch: Dispatch): PropsFromDispatch => ({
+  buyMedium: (currency: string) => dispatch(buyLevelMedRequest(currency)),
+  buyHard: (currency: string) => dispatch(buyLevelHardRequest(currency)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageContainer);

@@ -10,12 +10,14 @@ import {
 import { Modal, ModalBody } from "@kata-kit/modal";
 import Particles from "react-particles-js";
 
+import { ReactComponent as Diamond } from "assets/image/diamond.svg";
+import { ReactComponent as Coin } from "assets/image/coin.svg";
 import HeaderContainer from "modules/core/profile/Header";
 import { privateApi } from "utils/api/callApi";
 import { SoalProps } from "./Page.Container";
 import { notification } from "antd";
 
-// import Logo from "../../assets/image/saturn.png";
+// import Logo from "../../assets/image/physic-logo.svg";
 
 interface States {
   progress: { easy: number; med: number; hard: number };
@@ -55,11 +57,28 @@ export default class Page extends Component<SoalProps, States> {
       .then((res) => this.setState({ menu: res.data, loading: false }));
   };
 
-  buyLevel = (diff: string) => {
-    const { selected } = this.props;
+  buyLevel = (diff: string, currency: string) => {
+    const { selected, buyMedium, buyHard } = this.props;
     privateApi()
-      .put(`/menu/unlock/fisika/${diff}`, { id_user: selected && selected.id })
-      .then((res) => this.setState({ menu: res.data, isModalOpen: false }))
+      .put(`/menu/unlock/kimia/${diff}`, {
+        id_user: selected && selected.id,
+        currency: currency,
+      })
+      .then((res) => {
+        if (diff === "medium") {
+          if (currency === "diamond") {
+            currency = "coin";
+          }
+          buyMedium(currency);
+          this.setState({ menu: res.data, isModalOpen: false });
+        } else {
+          if (currency === "diamond") {
+            currency = "coin";
+          }
+          buyHard(currency);
+          this.setState({ menu: res.data, isModalOpen: false });
+        }
+      })
       .catch((error) => {
         notification["error"]({
           message: "Error!",
@@ -84,17 +103,33 @@ export default class Page extends Component<SoalProps, States> {
         >
           <ModalBody>
             <div className="m-6 text-center">
-              <h2>Buy Level</h2>
-              <h4>Are you sure?</h4>
+              <h2 className="mb-12">Buy Level</h2>
 
-              <Button
-                color="green"
-                onClick={() => this.buyLevel(selectedLevel)}
-              >
-                Yes
-              </Button>
+              <div className="flex flex-row justify-around items-center m-4">
+                <Button
+                  color="yellow"
+                  style={{ marginRight: 5 }}
+                  onClick={() => this.buyLevel(selectedLevel, "diamond")}
+                >
+                  <div className="flex flex-row justify-between items-center">
+                    <span> Buy with</span>
+                    <Diamond style={{ width: 20, height: 20, marginLeft: 5 }} />
+                  </div>
+                </Button>
+                <Button
+                  color="green"
+                  style={{ marginLeft: 5 }}
+                  onClick={() => this.buyLevel(selectedLevel, "point")}
+                >
+                  <div className="flex flex-row justify-between items-center">
+                    <span> Buy with</span>
+                    <Coin style={{ width: 20, height: 20, marginLeft: 5 }} />
+                  </div>
+                </Button>
+              </div>
               <Button
                 color="red"
+                style={{ marginTop: 15 }}
                 onClick={() => this.setState({ isModalOpen: false })}
               >
                 No
@@ -145,9 +180,10 @@ export default class Page extends Component<SoalProps, States> {
               >
                 <Image
                   className="h-auto"
-                  src={require("assets/image/saturn.png")}
+                  src={require("assets/icon/physic-logo.svg")}
                   wrapped
                   ui={false}
+                  style={{ padding: 20 }}
                 />
                 <Card.Content>
                   <Card.Header>Easy</Card.Header>
@@ -173,7 +209,7 @@ export default class Page extends Component<SoalProps, States> {
                 >
                   <Image
                     className="h-auto"
-                    src={require("assets/image/saturn.png")}
+                    src={require("assets/icon/physic-logo.svg")}
                     wrapped
                     ui={false}
                     style={{
@@ -250,7 +286,7 @@ export default class Page extends Component<SoalProps, States> {
                 >
                   <Image
                     className="h-auto"
-                    src={require("assets/image/saturn.png")}
+                    src={require("assets/icon/physic-logo.svg")}
                     wrapped
                     ui={false}
                     style={{

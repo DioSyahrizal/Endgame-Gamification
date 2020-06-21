@@ -25,11 +25,11 @@ const menu = [
     label: "Soal",
     icon: "book",
   },
-  // {
-  //   key: "members",
-  //   label: "Member",
-  //   icon: "team",
-  // },
+  {
+    key: "quest",
+    label: "Quest",
+    icon: "quest",
+  },
   // {
   //   key: "announcements",
   //   label: "Announcements",

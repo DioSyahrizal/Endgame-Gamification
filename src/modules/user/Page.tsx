@@ -9,6 +9,7 @@ const Kimia = React.lazy(() => import("./kimia"));
 const SoalKimia = React.lazy(() => import("./kimia/soal"));
 const Leaderboard = React.lazy(() => import("./leaderboard"));
 const Badge = React.lazy(() => import("./badge"));
+const Quest = React.lazy(() => import("./quest"));
 
 const Page: React.FC = () => {
   const parentPath = "/user";
@@ -33,6 +34,7 @@ const Page: React.FC = () => {
             exact
             component={SoalKimia}
           />
+          <Route path={`${parentPath}/quest/:id`} exact component={Quest} />
           <Route path={`${parentPath}/leaderboard`} component={Leaderboard} />
           <Route path={`${parentPath}/badge`} component={Badge} />
 

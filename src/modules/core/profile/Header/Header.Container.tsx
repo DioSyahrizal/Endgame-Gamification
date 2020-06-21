@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { getScoreData } from "store/score/selectors";
+import { getScoreData, getCoinData } from "store/score/selectors";
 import { fetchScoreRequest } from "store/score/actions";
 import { Header } from "./Header";
 import { RootStore } from "interfaces/stores";
@@ -10,7 +10,8 @@ import { getAuthSelected } from "store/auth/selectors";
 import { User } from "interfaces/user";
 
 interface PropsFromState {
-  data: number;
+  point: number;
+  coin: number;
   selected?: User | null;
 }
 
@@ -20,6 +21,7 @@ interface PropsFromDispatch {
 
 interface ColorProps {
   color?: string;
+  showPoint?: boolean;
 }
 
 export type ScoreProps = PropsFromDispatch & PropsFromState & ColorProps;
@@ -35,7 +37,8 @@ class HeaderContainer extends React.Component<ScoreProps> {
 }
 
 const mapStateToProps = ({ score, auth }: RootStore): PropsFromState => ({
-  data: getScoreData(score),
+  point: getScoreData(score),
+  coin: getCoinData(score),
   selected: getAuthSelected(auth),
 });
 

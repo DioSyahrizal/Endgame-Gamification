@@ -15,3 +15,15 @@ export const fetchBuyItem = () =>
 
 export const fetchBuyItemSuccess = () =>
   action(ScoreActionTypes.FETCH_BUYITEM_SUCCESS);
+
+export const buyLevelMedRequest = (currency: string) =>
+  action(ScoreActionTypes.FETCH_BUYLEVELMED_REQUEST, currency);
+
+export const buyLevelMedSuccess = (currency: string) =>
+  action(ScoreActionTypes.FETCH_BUYLEVELMED_SUCCESS, currency);
+
+export const buyLevelHardRequest = (currency: string) =>
+  action(ScoreActionTypes.FETCH_BUYLEVELHARD_REQUEST, currency);
+
+export const buyLevelHardSuccess = (currency: string) =>
+  action(ScoreActionTypes.FETCH_BUYLEVELHARD_SUCCESS, currency);

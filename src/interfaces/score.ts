@@ -1,5 +1,5 @@
 export interface ScoreState {
   loading: boolean;
   errors: string | null;
-  data: number;
+  data: { point: number; coin: number };
 }
