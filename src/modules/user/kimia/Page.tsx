@@ -46,7 +46,7 @@ export default class Page extends Component<SoalProps, States> {
       .get("/quiz/progress", {
         params: {
           id_user: selected && selected.id,
-          matpel: "Kimia",
+          matpel: "kimia",
         },
       })
       .then((res) => this.setState({ progress: res.data }));
@@ -187,10 +187,10 @@ export default class Page extends Component<SoalProps, States> {
                 </Card.Content>
                 <Card.Content extra>
                   <Progress
-                    value={progress.easy}
-                    total={5}
+                    value={progress.easy !== null ? progress.easy : 0}
+                    total={10}
                     progress="ratio"
-                    success={progress.easy === 5 ? true : false}
+                    success={progress.easy === 10 ? true : false}
                   />
                 </Card.Content>
               </Card>
@@ -220,10 +220,10 @@ export default class Page extends Component<SoalProps, States> {
                   </Card.Content>
                   <Card.Content extra>
                     <Progress
-                      value={progress.med}
-                      total={5}
+                      value={progress.med !== null ? progress.med : 0}
+                      total={10}
                       progress="ratio"
-                      success={progress.med === 5 ? true : false}
+                      success={progress.med === 10 ? true : false}
                     />
                   </Card.Content>
                 </Card>
@@ -297,7 +297,7 @@ export default class Page extends Component<SoalProps, States> {
                   </Card.Content>
                   <Card.Content extra>
                     <Progress
-                      value={progress.hard}
+                      value={progress.hard !== null ? progress.hard : 0}
                       total={5}
                       progress="ratio"
                       success={progress.hard === 5 ? true : false}

@@ -47,7 +47,7 @@ export default class Page extends Component<SoalProps, States> {
       .get("/quiz/progress", {
         params: {
           id_user: selected && selected.id,
-          matpel: "Fisika",
+          matpel: "fisika",
         },
       })
       .then((res) => this.setState({ progress: res.data }));
@@ -60,7 +60,7 @@ export default class Page extends Component<SoalProps, States> {
   buyLevel = (diff: string, currency: string) => {
     const { selected, buyMedium, buyHard } = this.props;
     privateApi()
-      .put(`/menu/unlock/kimia/${diff}`, {
+      .put(`/menu/unlock/fisika/${diff}`, {
         id_user: selected && selected.id,
         currency: currency,
       })
@@ -192,9 +192,9 @@ export default class Page extends Component<SoalProps, States> {
                 <Card.Content extra>
                   <Progress
                     value={progress.easy !== null ? progress.easy : 0}
-                    total={5}
+                    total={10}
                     progress="ratio"
-                    success={progress.easy === 5 ? true : false}
+                    success={progress.easy === 10 ? true : false}
                   />
                 </Card.Content>
               </Card>
@@ -225,9 +225,9 @@ export default class Page extends Component<SoalProps, States> {
                   <Card.Content extra>
                     <Progress
                       value={progress.med !== null ? progress.med : 0}
-                      total={5}
+                      total={10}
                       progress="ratio"
-                      success={progress.med === 5 ? true : false}
+                      success={progress.med === 10 ? true : false}
                     />
                   </Card.Content>
                 </Card>
