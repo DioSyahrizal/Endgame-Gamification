@@ -56,11 +56,28 @@ export default class Page extends Component<SoalProps, States> {
       .then((res) => this.setState({ menu: res.data, loading: false }));
   };
 
-  buyLevel = (diff: string) => {
-    const { selected } = this.props;
+  buyLevel = (diff: string, currency: string) => {
+    const { selected, buyMedium, buyHard } = this.props;
     privateApi()
-      .put(`/menu/unlock/kimia/${diff}`, { id_user: selected && selected.id })
-      .then((res) => this.setState({ menu: res.data, isModalOpen: false }))
+      .put(`/menu/unlock/kimia/${diff}`, {
+        id_user: selected && selected.id,
+        currency: currency,
+      })
+      .then((res) => {
+        if (diff === "medium") {
+          if (currency === "diamond") {
+            currency = "coin";
+          }
+          buyMedium(currency);
+          this.setState({ menu: res.data, isModalOpen: false });
+        } else {
+          if (currency === "diamond") {
+            currency = "coin";
+          }
+          buyHard(currency);
+          this.setState({ menu: res.data, isModalOpen: false });
+        }
+      })
       .catch((error) => {
         notification["error"]({
           message: "Error!",
@@ -91,7 +108,7 @@ export default class Page extends Component<SoalProps, States> {
                 <Button
                   color="yellow"
                   style={{ marginRight: 5 }}
-                  onClick={() => this.buyLevel(selectedLevel)}
+                  onClick={() => this.buyLevel(selectedLevel, "diamond")}
                 >
                   <div className="flex flex-row justify-between items-center">
                     <span> Buy with</span>
@@ -101,7 +118,7 @@ export default class Page extends Component<SoalProps, States> {
                 <Button
                   color="green"
                   style={{ marginLeft: 5 }}
-                  onClick={() => this.buyLevel(selectedLevel)}
+                  onClick={() => this.buyLevel(selectedLevel, "point")}
                 >
                   <div className="flex flex-row justify-between items-center">
                     <span> Buy with</span>

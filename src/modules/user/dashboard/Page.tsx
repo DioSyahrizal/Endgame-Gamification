@@ -93,7 +93,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
             <Card title="Kimia" />
           </DashboardCards> */}
 
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-10">
             <div className="flex flex-row justify-between">
               <Board
                 to="/user/fisika"
@@ -128,6 +128,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
             >
               <QuestLogo />
               <Title>Quest</Title>
+              <p>Buka di hari Selasa dan Kamis</p>
             </Board>
           </div>
         </Dashboard>

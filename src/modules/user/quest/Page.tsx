@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Modal, ModalBody } from "@kata-kit/modal";
 import { AppRoot, Topbar } from "@kata-kit/layout";
 import { variables } from "@kata-kit/theme";
+import moment from "moment";
 
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -69,49 +70,53 @@ export default class Page extends Component<QuestProps, QuestState> {
 
   componentDidMount() {
     const { selected, goBack } = this.props;
-
-    privateApi()
-      .get(`/quest/menu`)
-      .then((res) => {
-        if (res.data.data !== "open") {
-          goBack();
-        } else {
-          this.setState({ loading: true });
-          privateApi()
-            .post("/quest/generate", {
-              id_user: selected && selected.id,
-            })
-            .then((res) =>
-              setTimeout(
-                () => {
-                  privateApi()
-                    .get(`/quest/soal/${this.state.selected - 1}`, {
-                      params: {
-                        id_user: selected && selected.id,
-                      },
-                    })
-                    .then((res) => {
-                      if (res.data.data.result) {
-                        privateApi()
-                          .get(`/quest/answer/`, {
-                            params: { id: res.data.data.id },
-                          })
-                          .then((answer) =>
-                            this.setState({
-                              data: res.data.data,
-                              loading: false,
-                              answer: answer.data.answer,
+    const dateOpen = moment().format("dddd");
+    if (dateOpen === "Tuesday" || dateOpen === "Thursday") {
+      privateApi()
+        .get(`/quest/menu`)
+        .then((res) => {
+          if (res.data.data !== "open") {
+            goBack();
+          } else {
+            this.setState({ loading: true });
+            privateApi()
+              .post("/quest/generate", {
+                id_user: selected && selected.id,
+              })
+              .then((res) =>
+                setTimeout(
+                  () => {
+                    privateApi()
+                      .get(`/quest/soal/${this.state.selected - 1}`, {
+                        params: {
+                          id_user: selected && selected.id,
+                        },
+                      })
+                      .then((res) => {
+                        if (res.data.data.result) {
+                          privateApi()
+                            .get(`/quest/answer/`, {
+                              params: { id: res.data.data.id },
                             })
-                          );
-                      }
-                      this.setState({ data: res.data.data, loading: false });
-                    });
-                },
-                res.data.status === "Already add!" ? 0 : 1000
-              )
-            );
-        }
-      });
+                            .then((answer) =>
+                              this.setState({
+                                data: res.data.data,
+                                loading: false,
+                                answer: answer.data.answer,
+                              })
+                            );
+                        }
+                        this.setState({ data: res.data.data, loading: false });
+                      });
+                  },
+                  res.data.status === "Already add!" ? 0 : 1000
+                )
+              );
+          }
+        });
+    } else {
+      this.props.history.push("/user/dashboard");
+    }
   }
 
   submit = () => {
@@ -144,7 +149,7 @@ export default class Page extends Component<QuestProps, QuestState> {
 
   review = () => {
     const { history } = this.props;
-    if (this.state.selected === 5) {
+    if (this.state.selected === 10) {
       history.push("/user/dashboard");
     } else {
       const id = this.state.selected + 1;
@@ -274,11 +279,11 @@ export default class Page extends Component<QuestProps, QuestState> {
             )}
             {data.result === null ? (
               <Button color="green" onClick={() => this.submit()}>
-                {selected === 5 ? "Submit" : "Next"}
+                {selected === 10 ? "Submit" : "Next"}
               </Button>
             ) : (
               <Button color="green" onClick={() => this.review()}>
-                {selected === 5 ? "Go to Menu" : "Next"}
+                {selected === 10 ? "Go to Menu" : "Next"}
               </Button>
             )}
           </div>
