@@ -11,7 +11,7 @@ import { RouteComponentProps } from "react-router";
 import * as yup from "yup";
 
 import Background from "assets/image/login.jpeg";
-import { callApiWithoutToken } from "utils/api/callApi";
+import { notPrivateApi } from "utils/api/callApi";
 import { Formik } from "formik";
 
 interface Props extends RouteComponentProps {}
@@ -22,6 +22,7 @@ interface States {
   email: string;
   password: string;
   address: string;
+  error: string | null;
 }
 
 const initialValues = {
@@ -41,14 +42,24 @@ const validationSchema = yup.object({
 });
 
 export default class Register extends Component<Props, States> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      address: "",
+      error: null,
+    };
+  }
+
   register = (values: any) => {
-    callApiWithoutToken("post", "/register", values).then((res) => {
-      if (res.success) {
-        this.props.history.push("/login");
-      } else {
-        console.dir("Failed registration");
-      }
-    });
+    notPrivateApi()
+      .post("/register", values)
+      .then((_res) => this.props.history.push("/login"))
+      .catch((error) => this.setState({ error: error.response.data.message }));
   };
 
   inputChange = (name: string) => {
@@ -70,6 +81,11 @@ export default class Register extends Component<Props, States> {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
+          {this.state.error && (
+            <Message negative>
+              <Message.Header>{this.state.error}</Message.Header>
+            </Message>
+          )}
           <Header as="h2" color="teal" textAlign="center">
             {/* <Image src='/logo.png' /> Log-in to your account */}
           </Header>
