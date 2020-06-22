@@ -272,6 +272,13 @@ export default class Page extends Component<SoalProps, States> {
                         className="inline-block ml-1 mr-1"
                         style={{ width: 30, height: 30 }}
                       />
+                      or 300
+                      <img
+                        src={require("assets/image/diamond.svg")}
+                        alt="coin"
+                        className="inline-block ml-1 mr-1"
+                        style={{ width: 30, height: 30 }}
+                      />
                       !
                     </Card.Header>
                   </Card.Content>
@@ -345,6 +352,13 @@ export default class Page extends Component<SoalProps, States> {
                       Buy with 2000
                       <img
                         src={require("assets/image/coin.svg")}
+                        alt="coin"
+                        className="inline-block ml-1 mr-1"
+                        style={{ width: 30, height: 30 }}
+                      />
+                      or 600
+                      <img
+                        src={require("assets/image/diamond.svg")}
                         alt="coin"
                         className="inline-block ml-1 mr-1"
                         style={{ width: 30, height: 30 }}
