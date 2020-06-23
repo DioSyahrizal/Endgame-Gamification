@@ -16,7 +16,7 @@ import { AccountSelectorWrapper } from "./components";
 import Fisika from "assets/image/fisika.jpeg";
 import Kimia from "assets/image/kimia.jpeg";
 
-import * as env from "utils/env";
+// import * as env from "utils/env";
 
 // const GAMA_SERVICES = env.getRuntimeEnv(
 //   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
