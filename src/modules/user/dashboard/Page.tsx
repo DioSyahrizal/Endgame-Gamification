@@ -18,10 +18,10 @@ import Kimia from "assets/image/kimia.jpeg";
 
 import * as env from "utils/env";
 
-const GAMA_SERVICES = env.getRuntimeEnv(
-  "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
-  env.defaultEnvs["REACT_APP_RUNTIME_GAMA_SERVICE_URL"]
-);
+// const GAMA_SERVICES = env.getRuntimeEnv(
+//   "REACT_APP_RUNTIME_GAMA_SERVICE_URL",
+//   env.defaultEnvs["REACT_APP_RUNTIME_GAMA_SERVICE_URL"]
+// );
 
 const Title = styled("h3")`
   color: white;
@@ -77,9 +77,7 @@ export default class Dashboardmain extends Component<RouteComponentProps> {
           headerContent={
             <>
               <p>Learn with Game Mechanic</p> <br />
-              <p>
-                Build in {process.env.NODE_ENV} and {GAMA_SERVICES}
-              </p>
+              <p>Build in {process.env.NODE_ENV}</p>
             </>
           }
         >
