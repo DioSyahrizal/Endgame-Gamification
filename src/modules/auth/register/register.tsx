@@ -31,6 +31,8 @@ const initialValues = {
   password: "",
   address: "",
   name: "",
+  sekolah: "",
+  nohp: "",
 };
 
 const validationSchema = yup.object({
@@ -77,7 +79,7 @@ export default class Register extends Component<Props, States> {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh", backgroundImage: `url(${Background}) ` }}
+        style={{ height: "auto", backgroundImage: `url(${Background}) ` }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -144,7 +146,7 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="password"
-                      label="password"
+                      label="Password"
                     />
 
                     <Form.Input
@@ -160,7 +162,7 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="name"
-                      label="Name"
+                      label="Nama"
                     />
 
                     <Form.Input
@@ -177,7 +179,39 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="address"
-                      label="Address"
+                      label="Alamat"
+                    />
+
+                    <Form.Input
+                      name="sekolah"
+                      onChange={handleChange}
+                      value={values.sekolah}
+                      error={
+                        errors.sekolah
+                          ? { content: errors.sekolah, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="sekolah"
+                      label="Sekolah"
+                    />
+
+                    <Form.Input
+                      name="nohp"
+                      onChange={handleChange}
+                      value={values.nohp}
+                      error={
+                        errors.nohp
+                          ? { content: errors.nohp, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="nohp"
+                      label="Nomor HP"
                     />
 
                     <Button
