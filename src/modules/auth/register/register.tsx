@@ -11,7 +11,7 @@ import { RouteComponentProps } from "react-router";
 import * as yup from "yup";
 
 import Background from "assets/image/login.jpeg";
-import { callApiWithoutToken } from "utils/api/callApi";
+import { notPrivateApi } from "utils/api/callApi";
 import { Formik } from "formik";
 
 interface Props extends RouteComponentProps {}
@@ -22,6 +22,7 @@ interface States {
   email: string;
   password: string;
   address: string;
+  error: string | null;
 }
 
 const initialValues = {
@@ -30,6 +31,8 @@ const initialValues = {
   password: "",
   address: "",
   name: "",
+  sekolah: "",
+  nohp: "",
 };
 
 const validationSchema = yup.object({
@@ -41,14 +44,24 @@ const validationSchema = yup.object({
 });
 
 export default class Register extends Component<Props, States> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      address: "",
+      error: null,
+    };
+  }
+
   register = (values: any) => {
-    callApiWithoutToken("post", "/register", values).then((res) => {
-      if (res.success) {
-        this.props.history.push("/login");
-      } else {
-        console.dir("Failed registration");
-      }
-    });
+    notPrivateApi()
+      .post("/register", values)
+      .then((_res) => this.props.history.push("/login"))
+      .catch((error) => this.setState({ error: error.response.data.message }));
   };
 
   inputChange = (name: string) => {
@@ -66,10 +79,15 @@ export default class Register extends Component<Props, States> {
     return (
       <Grid
         textAlign="center"
-        style={{ height: "100vh", backgroundImage: `url(${Background}) ` }}
+        style={{ height: "auto", backgroundImage: `url(${Background}) ` }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
+          {this.state.error && (
+            <Message negative>
+              <Message.Header>{this.state.error}</Message.Header>
+            </Message>
+          )}
           <Header as="h2" color="teal" textAlign="center">
             {/* <Image src='/logo.png' /> Log-in to your account */}
           </Header>
@@ -128,7 +146,7 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="password"
-                      label="password"
+                      label="Password"
                     />
 
                     <Form.Input
@@ -144,7 +162,7 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="name"
-                      label="Name"
+                      label="Nama"
                     />
 
                     <Form.Input
@@ -161,7 +179,39 @@ export default class Register extends Component<Props, States> {
                       icon="user"
                       iconPosition="left"
                       placeholder="address"
-                      label="Address"
+                      label="Alamat"
+                    />
+
+                    <Form.Input
+                      name="sekolah"
+                      onChange={handleChange}
+                      value={values.sekolah}
+                      error={
+                        errors.sekolah
+                          ? { content: errors.sekolah, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="sekolah"
+                      label="Sekolah"
+                    />
+
+                    <Form.Input
+                      name="nohp"
+                      onChange={handleChange}
+                      value={values.nohp}
+                      error={
+                        errors.nohp
+                          ? { content: errors.nohp, pointing: "top" }
+                          : null
+                      }
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="nohp"
+                      label="Nomor HP"
                     />
 
                     <Button

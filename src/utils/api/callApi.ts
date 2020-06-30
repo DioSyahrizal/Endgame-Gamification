@@ -75,3 +75,11 @@ export function privateApi() {
 
   return instance;
 }
+
+export function notPrivateApi() {
+  const instance = axios.create({
+    baseURL: API_URL_ENDPOINT,
+  });
+
+  return instance;
+}
