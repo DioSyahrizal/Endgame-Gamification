@@ -252,7 +252,7 @@ export default class Page extends Component<QuestProps, QuestState> {
           <ModalBody>
             <div className="m-6 text-center">
               <h2>Kamu {hasil === "true" ? "benar" : "salah"} menjawab!</h2>
-              {hasil === "true" && <h4>Kamu mendapatkan 600 Diamond</h4>}
+              {hasil === "true" && <h4>Kamu mendapatkan 100 Diamond</h4>}
 
               <Button color="green" onClick={() => this.closeModal()}>
                 Lanjut ke Quest Berikutnya
