@@ -41,6 +41,8 @@ const validationSchema = yup.object({
   password: yup.string().required("Password is empty!"),
   address: yup.string().required("Address is empty"),
   name: yup.string().required("Name is required"),
+  sekolah: yup.string().required("Sekolah is required"),
+  nohp: yup.string().required("No HP is required"),
 });
 
 export default class Register extends Component<Props, States> {
