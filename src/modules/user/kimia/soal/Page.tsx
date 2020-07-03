@@ -142,24 +142,46 @@ export default class Page extends Component<KimiaProps, Easyfis> {
         .put("/quiz/correction", data)
         .then((res) => console.dir(res));
 
-      if (this.state.selected === 5) {
-        privateApi()
-          .put("/quiz/correction", data)
-          .then((res) => {
-            privateApi()
-              .post("/quiz/score", {
-                id_user: selected && selected.id,
-                level: capitalizeFirstLetter(match.params.diff),
-                matpel: "kimia",
-              })
-              .then((data) =>
-                this.setState({ score: data.data.score, isModalOpen: true })
-              );
-          });
+      if (this.props.match.params.diff === "hard") {
+        if (this.state.selected === 5) {
+          privateApi()
+            .put("/quiz/correction", data)
+            .then((res) => {
+              privateApi()
+                .post("/quiz/score", {
+                  id_user: selected && selected.id,
+                  level: capitalizeFirstLetter(match.params.diff),
+                  matpel: "kimia",
+                })
+                .then((data) =>
+                  this.setState({ score: data.data.score, isModalOpen: true })
+                );
+            });
+        } else {
+          const id = this.state.selected + 1;
+          this.setState({ selected: id, pilih: "" });
+          history.push(`/user/kimia/${match.params.diff}/${id}`);
+        }
       } else {
-        const id = this.state.selected + 1;
-        this.setState({ selected: id, pilih: "" });
-        history.push(`/user/kimia/${match.params.diff}/${id}`);
+        if (this.state.selected === 10) {
+          privateApi()
+            .put("/quiz/correction", data)
+            .then((res) => {
+              privateApi()
+                .post("/quiz/score", {
+                  id_user: selected && selected.id,
+                  level: capitalizeFirstLetter(match.params.diff),
+                  matpel: "kimia",
+                })
+                .then((data) =>
+                  this.setState({ score: data.data.score, isModalOpen: true })
+                );
+            });
+        } else {
+          const id = this.state.selected + 1;
+          this.setState({ selected: id, pilih: "" });
+          history.push(`/user/kimia/${match.params.diff}/${id}`);
+        }
       }
     } else {
       notification["warning"]({
@@ -168,18 +190,27 @@ export default class Page extends Component<KimiaProps, Easyfis> {
         placement: "topRight",
       });
     }
-
     // jika diujung soal maka submit score
   };
 
   review = () => {
     const { history, match } = this.props;
-    if (this.state.selected === 5) {
-      history.push("/user/kimia");
+    if (match.params.diff === "hard") {
+      if (this.state.selected === 5) {
+        history.push("/user/kimia");
+      } else {
+        const id = this.state.selected + 1;
+        this.setState({ selected: id });
+        history.push(`/user/kimia/${match.params.diff}/${id}`);
+      }
     } else {
-      const id = this.state.selected + 1;
-      this.setState({ selected: id });
-      history.push(`/user/kimia/${match.params.diff}/${id}`);
+      if (this.state.selected === 10) {
+        history.push("/user/kimia");
+      } else {
+        const id = this.state.selected + 1;
+        this.setState({ selected: id });
+        history.push(`/user/kimia/${match.params.diff}/${id}`);
+      }
     }
   };
 
@@ -358,11 +389,23 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             )}
             {data.result === null ? (
               <Button color="green" onClick={() => this.submit()}>
-                {selected === 5 ? "Submit" : "Next"}
+                {this.props.match.params.diff !== "hard"
+                  ? selected === 10
+                    ? "Submit"
+                    : "Next"
+                  : selected === 5
+                  ? "Submit"
+                  : "Next"}
               </Button>
             ) : (
               <Button color="green" onClick={() => this.review()}>
-                {selected === 5 ? "Go to Menu" : "Next"}
+                {this.props.match.params.diff !== "hard"
+                  ? selected === 10
+                    ? "Go to Menu"
+                    : "Next"
+                  : selected === 5
+                  ? "Go to Menu"
+                  : "Next"}
               </Button>
             )}
           </div>
