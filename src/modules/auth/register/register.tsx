@@ -17,11 +17,7 @@ import { Formik } from "formik";
 interface Props extends RouteComponentProps {}
 
 interface States {
-  username: string;
-  name: string;
-  email: string;
-  password: string;
-  address: string;
+  loading: boolean;
   error: string | null;
 }
 
@@ -50,20 +46,22 @@ export default class Register extends Component<Props, States> {
     super(props);
 
     this.state = {
-      username: "",
-      name: "",
-      email: "",
-      password: "",
-      address: "",
+      loading: false,
       error: null,
     };
   }
 
   register = (values: any) => {
+    this.setState({ loading: true });
     notPrivateApi()
       .post("/register", values)
-      .then((_res) => this.props.history.push("/login"))
-      .catch((error) => this.setState({ error: error.response.data.message }));
+      .then((_res) => {
+        this.setState({ loading: false });
+        this.props.history.push("/login");
+      })
+      .catch((error) =>
+        this.setState({ error: error.response.data.message, loading: false })
+      );
   };
 
   inputChange = (name: string) => {
@@ -78,6 +76,7 @@ export default class Register extends Component<Props, States> {
   };
 
   render() {
+    const { loading } = this.state;
     return (
       <Grid
         textAlign="center"
@@ -223,6 +222,7 @@ export default class Register extends Component<Props, States> {
                       fluid
                       labelPosition="right"
                       content="Register"
+                      loading={loading}
                     />
                   </Segment>
                 </Form>
