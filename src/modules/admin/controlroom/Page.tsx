@@ -14,7 +14,7 @@ const Page: FC = (props) => {
   const [data, setData] = useState([]);
   const [detail, setDetail] = useState<ControlUser | null>(null);
   const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const { state: sideNavState, setSideNavState } = useContext(SideNavContext);
   const { setBreadcrumbs } = useContext(BreadcrumbContext);
 
@@ -85,11 +85,11 @@ const Page: FC = (props) => {
       },
     },
     {
-      title: "Address",
-      key: "address",
-      dataIndex: "address",
+      title: "Diamond",
+      key: "coin",
+      dataIndex: "coin",
       render: (text: string) => {
-        return <p>{textFormat(text)}</p>;
+        return <p>{text}</p>;
       },
     },
     {
@@ -139,11 +139,7 @@ const Page: FC = (props) => {
               user={detail}
             />
           </TabPane>
-          <TabPane tab="Tab 3" key="3">
-            Content of Tab Pane 3
-          </TabPane>
         </Tabs>
-        ,
       </Drawer>
       <div className="flex justify-between items-center">
         <Typography.Title level={2}>Control Room</Typography.Title>

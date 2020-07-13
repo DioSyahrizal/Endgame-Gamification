@@ -17,6 +17,7 @@ const validationSchema = yup.object({
   email: yup.string().email("Format email salah").required("Email Kosong"),
   address: yup.string().required("Alamat Kosong"),
   point: yup.number().required("Point kosong"),
+  coin: yup.number().required(),
 });
 
 const UserForm = (props: IUserForm) => {
@@ -87,6 +88,18 @@ const UserForm = (props: IUserForm) => {
                 type="number"
                 placeholder="point"
                 label="point"
+                disabled={disabled}
+              />
+
+              <Form.Input
+                name="coin"
+                onChange={handleChange}
+                value={values.coin}
+                error={errors.coin ? { content: errors.coin } : null}
+                fluid
+                type="number"
+                placeholder="Diamond"
+                label="diamond"
                 disabled={disabled}
               />
 
