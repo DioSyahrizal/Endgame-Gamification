@@ -351,7 +351,10 @@ export default class Page extends Component<FisikaProps, Easyfis> {
 
         <Modal
           show={isModalOpen}
-          onClose={() => this.setState({ isModalOpen: false })}
+          onClose={() => {
+            this.setState({ isModalOpen: false });
+            this.props.history.push("/user/fisika");
+          }}
         >
           <ModalBody>
             <div className="m-6 text-center">

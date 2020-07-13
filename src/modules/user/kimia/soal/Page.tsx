@@ -81,50 +81,64 @@ export default class Page extends Component<KimiaProps, Easyfis> {
   }
 
   componentDidMount() {
-    const { selected, match } = this.props;
-    this.setState({ loading: true });
+    const { selected, match, goBack } = this.props;
+    // const arr = location.pathname.split("/");
     privateApi()
-      .post("/quiz/generate", {
-        id_user: selected && selected.id,
-        matpel: "kimia",
-        level: capitalizeFirstLetter(match.params.diff),
-      })
-      .then((res) =>
-        setTimeout(
-          () => {
-            privateApi()
-              .get(`/quiz/soal/${this.state.selected - 1}`, {
-                params: {
-                  id_user: selected && selected.id,
-                  matpel: "kimia",
-                  level: capitalizeFirstLetter(match.params.diff),
-                },
-              })
-              .then((res) => {
-                if (res.data.data.result) {
+      .get(`/menu/${selected && selected.id}`)
+      .then((res) => {
+        if (match.params.diff === "hard" && res.data.fis_hard === "lock") {
+          goBack();
+        } else if (
+          match.params.diff === "hard" &&
+          res.data.fis_hard === "lock"
+        ) {
+          goBack();
+        } else {
+          this.setState({ loading: true });
+          privateApi()
+            .post("/quiz/generate", {
+              id_user: selected && selected.id,
+              matpel: "kimia",
+              level: capitalizeFirstLetter(match.params.diff),
+            })
+            .then((res) =>
+              setTimeout(
+                () => {
                   privateApi()
-                    .get(`/quiz/answer/`, {
-                      params: { id: res.data.data.id },
+                    .get(`/quiz/soal/${this.state.selected - 1}`, {
+                      params: {
+                        id_user: selected && selected.id,
+                        matpel: "kimia",
+                        level: capitalizeFirstLetter(match.params.diff),
+                      },
                     })
-                    .then((answer) =>
-                      this.setState({
-                        data: res.data.data,
-                        loading: false,
-                        answer: answer.data.answer,
-                      })
-                    );
-                }
-                this.setState({ data: res.data.data, loading: false });
-                privateApi()
-                  .get(`/item/kunci/${selected && selected.id}`)
-                  .then((res) => {
-                    this.setState({ quantity: res.data.quantity });
-                  });
-              });
-          },
-          res.data.status === "Already add!" ? 0 : 1000
-        )
-      );
+                    .then((res) => {
+                      if (res.data.data.result) {
+                        privateApi()
+                          .get(`/quiz/answer/`, {
+                            params: { id: res.data.data.id },
+                          })
+                          .then((answer) =>
+                            this.setState({
+                              data: res.data.data,
+                              loading: false,
+                              answer: answer.data.answer,
+                            })
+                          );
+                      }
+                      this.setState({ data: res.data.data, loading: false });
+                      privateApi()
+                        .get(`/item/kunci/${selected && selected.id}`)
+                        .then((res) => {
+                          this.setState({ quantity: res.data.quantity });
+                        });
+                    });
+                },
+                res.data.status === "Already add!" ? 0 : 1000
+              )
+            );
+        }
+      });
   }
 
   submit = () => {
@@ -336,7 +350,10 @@ export default class Page extends Component<KimiaProps, Easyfis> {
 
         <Modal
           show={isModalOpen}
-          onClose={() => this.setState({ isModalOpen: false })}
+          onClose={() => {
+            this.setState({ isModalOpen: false });
+            this.props.history.push("/user/kimia");
+          }}
         >
           <ModalBody>
             <div className="m-6 text-center">
