@@ -36,6 +36,9 @@ interface Easyfis {
   kunci: boolean;
   quantity: number;
   loadKey: boolean;
+  examTime: number;
+  timeOut: boolean;
+  timer: any;
 }
 
 const Box = styled("div")`
@@ -47,6 +50,14 @@ const Box = styled("div")`
   padding: 14px 16px;
   font-weight: 500;
   margin-bottom: 30px;
+`;
+
+const TimeWrap = styled("div")`
+  padding: 5px 10px;
+  border: black 1px solid;
+  font-size: 16px;
+  border-radius: 5px;
+  background: #ffc107;
 `;
 
 export default class Page extends Component<FisikaProps, Easyfis> {
@@ -77,12 +88,16 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       kunci: false,
       quantity: 0,
       loadKey: false,
+      examTime: 0,
+      timeOut: false,
+      timer: null,
     };
   }
 
   componentDidMount() {
     const { selected, match, goBack } = this.props;
-    // const arr = location.pathname.split("/");
+    // const arr = location.pathname.split("/")
+    this.setTime();
     privateApi()
       .get(`/menu/${selected && selected.id}`)
       .then((res) => {
@@ -277,6 +292,57 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       });
   };
 
+  setTime = () => {
+    const { diff } = this.props.match.params;
+    const { data } = this.state;
+    const time = diff === "medium" ? 10 : diff === "hard" ? 20 : 0;
+    const condition = data.result ? 0 : time;
+    const examTime =
+      Date.parse(new Date().toString()) +
+      1000 * 60 * condition -
+      Date.parse(new Date().toString());
+    const timer = setInterval(() => this.CountDown(), 1000);
+    this.setState({ examTime, timer });
+    this.remainingTime();
+  };
+
+  CountDown() {
+    if (this.state.examTime === 1000) {
+      localStorage.setItem("Time", "Timed Up");
+      this.handleTimeOut();
+    } else if (this.state.examTime > 0) {
+      let countDown = this.state.examTime - 1000;
+      localStorage.setItem("Time", JSON.stringify(countDown));
+      this.setState({ examTime: countDown });
+    }
+  }
+
+  remainingTime() {
+    let seconds = this.leadingZero(
+      Math.floor((this.state.examTime / 1000) % 60)
+    );
+    let minutes = this.leadingZero(
+      Math.floor((this.state.examTime / 1000 / 60) % 60)
+    );
+
+    return `${minutes}:${seconds}`;
+  }
+
+  leadingZero(num: number) {
+    if (num < 10) {
+      return "0" + num;
+    }
+
+    return num;
+  }
+
+  handleTimeOut = () => {
+    clearInterval(this.state.timer);
+    this.setState({
+      timeOut: true,
+    });
+  };
+
   componentDidUpdate(prevProps: FisikaProps, prevState: { selected: number }) {
     const { selected } = this.state;
     const { match } = this.props;
@@ -320,6 +386,11 @@ export default class Page extends Component<FisikaProps, Easyfis> {
     }
   }
 
+  goAfterTime = () => {
+    const { push } = this.props.history;
+    push("/user/fisika");
+  };
+
   render() {
     const {
       data,
@@ -334,14 +405,21 @@ export default class Page extends Component<FisikaProps, Easyfis> {
       isModalItemOpen,
     } = this.state;
 
+    const { diff } = this.props.match.params;
+
     return (
       <AppRoot>
         <Topbar
           leftContent={
-            <Button basic onClick={() => this.props.goBack()}>
-              <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
-              Back
-            </Button>
+            <div className="flex items-center">
+              <Button basic onClick={() => this.props.goBack()}>
+                <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
+                Back
+              </Button>
+              {diff !== "easy" && data.result === null && (
+                <TimeWrap className="ml-2">{this.remainingTime()}</TimeWrap>
+              )}
+            </div>
           }
         >
           <div className="flex flex-row justify-around items-center">
@@ -390,6 +468,7 @@ export default class Page extends Component<FisikaProps, Easyfis> {
         </Modal>
 
         <Container textAlign="center" className="mt-12">
+          {this.state.timeOut ? this.goAfterTime() : null}
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
@@ -533,16 +612,19 @@ export default class Page extends Component<FisikaProps, Easyfis> {
         </Container>
         {data.result === null && (
           <Fab
+            mainButtonStyles={{ background: "green" }}
             position={{ bottom: 0, right: 0 }}
             icon={<FontAwesomeIcon icon={faKey} />}
           >
             <Action
+              style={{ background: "red" }}
               text="Use Kunci"
               onClick={!kunci ? () => this.useItem() : () => null}
             >
               <span>{this.state.quantity}</span>
             </Action>
             <Action
+              style={{ background: "orange" }}
               text="Beli Kunci"
               onClick={() => this.setState({ isModalItemOpen: true })}
             >

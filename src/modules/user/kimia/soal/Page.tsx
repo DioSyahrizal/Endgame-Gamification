@@ -36,6 +36,9 @@ interface Easyfis {
   kunci: boolean;
   quantity: number;
   loadKey: boolean;
+  examTime: number;
+  timeOut: boolean;
+  timer: any;
 }
 
 const Box = styled("div")`
@@ -47,6 +50,14 @@ const Box = styled("div")`
   padding: 14px 16px;
   font-weight: 500;
   margin-bottom: 30px;
+`;
+
+const TimeWrap = styled("div")`
+  padding: 5px 10px;
+  border: black 1px solid;
+  font-size: 16px;
+  border-radius: 5px;
+  background: #ffc107;
 `;
 
 export default class Page extends Component<KimiaProps, Easyfis> {
@@ -77,20 +88,24 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       kunci: false,
       quantity: 0,
       loadKey: false,
+      examTime: 0,
+      timeOut: false,
+      timer: null,
     };
   }
 
   componentDidMount() {
     const { selected, match, goBack } = this.props;
-    // const arr = location.pathname.split("/");
+    // const arr = location.pathname.split("/")
+    this.setTime();
     privateApi()
       .get(`/menu/${selected && selected.id}`)
       .then((res) => {
-        if (match.params.diff === "hard" && res.data.fis_hard === "lock") {
+        if (match.params.diff === "hard" && res.data.kim_hard === "lock") {
           goBack();
         } else if (
           match.params.diff === "hard" &&
-          res.data.fis_hard === "lock"
+          res.data.kim_hard === "lock"
         ) {
           goBack();
         } else {
@@ -204,6 +219,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
         placement: "topRight",
       });
     }
+
     // jika diujung soal maka submit score
   };
 
@@ -276,6 +292,57 @@ export default class Page extends Component<KimiaProps, Easyfis> {
       });
   };
 
+  setTime = () => {
+    const { diff } = this.props.match.params;
+    const { data } = this.state;
+    const time = diff === "medium" ? 10 : diff === "hard" ? 20 : 0;
+    const condition = data.result ? 0 : time;
+    const examTime =
+      Date.parse(new Date().toString()) +
+      1000 * 60 * condition -
+      Date.parse(new Date().toString());
+    const timer = setInterval(() => this.CountDown(), 1000);
+    this.setState({ examTime, timer });
+    this.remainingTime();
+  };
+
+  CountDown() {
+    if (this.state.examTime === 1000) {
+      localStorage.setItem("Time", "Timed Up");
+      this.handleTimeOut();
+    } else if (this.state.examTime > 0) {
+      let countDown = this.state.examTime - 1000;
+      localStorage.setItem("Time", JSON.stringify(countDown));
+      this.setState({ examTime: countDown });
+    }
+  }
+
+  remainingTime() {
+    let seconds = this.leadingZero(
+      Math.floor((this.state.examTime / 1000) % 60)
+    );
+    let minutes = this.leadingZero(
+      Math.floor((this.state.examTime / 1000 / 60) % 60)
+    );
+
+    return `${minutes}:${seconds}`;
+  }
+
+  leadingZero(num: number) {
+    if (num < 10) {
+      return "0" + num;
+    }
+
+    return num;
+  }
+
+  handleTimeOut = () => {
+    clearInterval(this.state.timer);
+    this.setState({
+      timeOut: true,
+    });
+  };
+
   componentDidUpdate(prevProps: KimiaProps, prevState: { selected: number }) {
     const { selected } = this.state;
     const { match } = this.props;
@@ -319,28 +386,40 @@ export default class Page extends Component<KimiaProps, Easyfis> {
     }
   }
 
+  goAfterTime = () => {
+    const { push } = this.props.history;
+    push("/user/fisika");
+  };
+
   render() {
     const {
       data,
       pilih,
       selected,
       isModalOpen,
-      isModalItemOpen,
       score,
       loading,
       answer,
       kunci,
       loadKey,
+      isModalItemOpen,
     } = this.state;
+
+    const { diff } = this.props.match.params;
 
     return (
       <AppRoot>
         <Topbar
           leftContent={
-            <Button basic onClick={() => this.props.goBack()}>
-              <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
-              Back
-            </Button>
+            <div className="flex items-center">
+              <Button basic onClick={() => this.props.goBack()}>
+                <FontAwesomeIcon icon={faArrowLeft} className="mr-4" />
+                Back
+              </Button>
+              {diff !== "easy" && (
+                <TimeWrap className="ml-2">{this.remainingTime()}</TimeWrap>
+              )}
+            </div>
           }
         >
           <div className="flex flex-row justify-around items-center">
@@ -359,7 +438,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
             <div className="m-6 text-center">
               <h2>Congratulation!</h2>
               <h4>Your Score is {score}</h4>
-              <Link to="/user/dashboard">
+              <Link to="/user/kimia">
                 <Button color="green">Go back to Menu</Button>
               </Link>
             </div>
@@ -389,6 +468,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
         </Modal>
 
         <Container textAlign="center" className="mt-12">
+          {this.state.timeOut ? this.goAfterTime() : null}
           <h1 style={{ marginTop: "40px", marginBottom: "40px" }}>
             Soal {selected}
           </h1>
