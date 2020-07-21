@@ -387,8 +387,20 @@ export default class Page extends Component<FisikaProps, Easyfis> {
   }
 
   goAfterTime = () => {
-    const { push } = this.props.history;
-    push("/user/fisika");
+    const { match } = this.props;
+    privateApi()
+      .post("/quiz/timeout", {
+        id_user: this.props.selected && this.props.selected.id,
+        matpel: "fisika",
+        level: match.params.diff,
+      })
+      .then((_res) => {
+        const { push } = this.props.history;
+        push("/user/fisika");
+      })
+      .catch((err) => {
+        console.dir(err);
+      });
   };
 
   render() {
