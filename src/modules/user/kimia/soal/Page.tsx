@@ -295,7 +295,7 @@ export default class Page extends Component<KimiaProps, Easyfis> {
   setTime = () => {
     const { diff } = this.props.match.params;
     const { data } = this.state;
-    const time = diff === "medium" ? 10 : diff === "hard" ? 20 : 0;
+    const time = diff === "medium" ? 15 : diff === "hard" ? 8 : 0;
     const condition = data.result ? 0 : time;
     const examTime =
       Date.parse(new Date().toString()) +
