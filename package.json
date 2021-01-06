@@ -26,7 +26,7 @@
     "@types/yup": "^0.26.33",
     "antd": "^4.1.0",
     "autoprefixer": "^9.7.4",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "clsx": "^1.0.4",
     "connected-react-router": "6.0.0",
     "formik": "^2.1.4",
