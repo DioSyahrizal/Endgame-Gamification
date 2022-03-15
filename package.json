@@ -33,7 +33,7 @@
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "moment": "^2.27.0",
     "postcss-cli": "^7.1.0",
     "pusher-js": "^5.1.1",
